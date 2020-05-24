@@ -22,34 +22,28 @@
             //console.log("line count ", text.match(new RegExp("\n", "gm")).length )
             console.log("verses count ", text.split(new RegExp("[0-9]+:[0-9]+", "gm")).length )
             
-            let verses = text.match(new RegExp("([0-9]+\:[0-9]+)", "gm"));
+            text = text.replace(new RegExp("([0-9]+:[0-9]+)", "gm"), "\n@$1");
 
-            let setVerses = new Set(verses)
-
-            console.log(verses.length, setVerses.size)
-
-            Array.from(setVerses).forEach( o => {
-                
-            })
-            
+            let verses = text.split(new RegExp("@([0-9]+:[0-9]+)", "gm"));
             //document.querySelector("#result").value = verses;
             /**/
             let bookIndex = -1;
             const cleanVerses = verses.map( (x,i) => {
                 
-                return x.replace(new RegExp("([0-9]+):([0-9]+).*", "g"), function(m, chapter, verse){
+                return x.replace(new RegExp("([0-9]+):([0-9]+)(.*)", "g"), function(m, chapter, verse, rest){
                     if(chapter == 1 && verse == 1){
                         bookIndex += 1;
                     }
-                    //console.log(chapter, verse, m)
+                    console.log(chapter, verse, rest)
                     return books[bookIndex] + ` ${m}`;
                 });
 
                 //console.log( x, m )
                 //console.log(books[bookIndex])
             } );
+
             
-            document.querySelector("#result").value = cleanVerses.join("\n");
+            document.querySelector("#result").value = cleanVerses.join("");
         })()
 
         function addQuotes(){
