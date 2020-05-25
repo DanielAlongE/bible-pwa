@@ -10,10 +10,8 @@
     <div>
         <button id="btn-run">Run</button>
     </div>
-    
+    <script src="../dist/tecarta.js"></script>
     <script>
-
-    import { populateResult } from './dist/tecarta.js';
 
     var bookNumbers = Array(73).fill(0).map((x,i)=>i+1);
 
@@ -74,9 +72,9 @@
             })
         }
 
-        document.querySelector("#btn-run").addEventListener('click', function(e){
+        document.querySelector("#btn-run").addEventListener('click', async function(e){
             //addQuotes();
-            populateResult();
+            document.querySelector("#result").value = await populateResult();
 
             //document.querySelector("#result").value = JSON.stringify(makeBibleData());
         })
