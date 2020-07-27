@@ -1,0 +1,20 @@
+{
+  "name": "bible-pwa",
+  "version": "1.0.0",
+  "description": "I love the word of God, I want to have my own bible app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DanielAlongE/bible-pwa.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DanielAlongE/bible-pwa/issues"
+  },
+  "homepage": "https://github.com/DanielAlongE/bible-pwa#readme"
+}
