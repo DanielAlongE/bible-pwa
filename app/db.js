@@ -71,3 +71,71 @@ export async function addVerses(items, table=VERSES_TABLE ) {
       return [];
     }
   }
+
+export async function search1(term="kjv-64", table=VERSES_TABLE) {
+
+    try {
+
+      const db = dbPromise;
+
+        //const tx = db.transaction(table, 'readonly');
+        //var store = tx.objectStore(table);
+
+        let index = 0;
+
+        let cursor = await db.transaction(table).store.openCursor();
+
+        while (cursor) {
+            //if(cursor.key.indexOf(term) == 0){}
+            //  console.log(cursor.key, cursor.value);                
+            
+            //console.warn(cursor.key)
+          cursor = await cursor.continue();
+          index += 1;
+        }
+
+        console.log({index})
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  }
+
+export async function search(term="kjv-64", table=VERSES_TABLE) {
+
+    try {
+
+      const db = dbPromise;
+
+        //const tx = db.transaction(table, 'readonly');
+        //var store = tx.objectStore(table);
+
+        var tx = db.transaction(table, 'readonly');
+        var store = tx.objectStore(table);
+        const index = store.index('uuid');
+        let cursor =  index.openCursor( IDBKeyRange.bound("kjv-65-1-1", "kjv-65-22-1") ); //, "kjv-65-1-24"
+
+        //range = IDBKeyRange.bound(lower, upper);
+        //range = IDBKeyRange.upperBound(upper);
+        //range = IDBKeyRange.lowerBound(lower);
+
+        Promise.resolve(cursor)
+        .then(function logItems(cursor) {
+        if (!cursor) {
+          return;
+        }
+        console.log('Cursored at:', cursor.key);
+        for (var field in cursor.value) {
+          console.log(cursor.value[field]);
+        }
+        return cursor.continue().then(logItems);
+      }).then(function() {
+        console.log('Done cursoring');
+      })
+
+
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  }

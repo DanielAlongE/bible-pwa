@@ -14,7 +14,7 @@
     <script src="../dist/tecarta.js"></script>
 
     <script type="module">
-        import { initDB, addVerses } from "./db.js";
+        import { initDB, addVerses, getAll, search } from "./db.js";
 
         console.log("doing initDB");
         initDB().then(()=>console.log('done initDB'));
@@ -36,9 +36,11 @@
             //document.querySelector("#result").value = await populateResult();
 
             //document.querySelector("#result").value = JSON.stringify(makeBibleData());
-            getAll().then(res => {
-                console.log(res.length);
-            });
+            //getAll()
+
+            
+            search();
+
         })
         
     </script>
