@@ -9,76 +9,37 @@
     <textarea id="result" cols="5" style="width: 100%; height: 400px;"></textarea>
     <div>
         <button id="btn-run">Run</button>
+        <button id="btn-get">Get</button>
     </div>
     <script src="../dist/tecarta.js"></script>
-    <script>
 
-    var bookNumbers = Array(73).fill(0).map((x,i)=>i+1);
+    <script type="module">
+        import { initDB, addVerses } from "./db.js";
 
-    var canonNumbers = bookNumbers.filter(x => ![17, 18, 20, 21, 27, 28, 32].includes(x));
-
-
-        const books = ['Genesis', 'Exodus', 'Leviticus', 'Numbers', 'Deuteronomy', 'Joshua', 'Judges', 'Ruth', '1 Samuel', '2 Samuel', '1 Kings', '2 Kings', '1 Chronicles', '2 Chronicles', 'Ezra', 'Nehemiah', 'Esther', 'Job', 'Psalms', 'Proverbs', 'Ecclesiastes', 'Song of Solomon', 'Isaiah', 'Jeremiah', 'Lamentations', 'Ezekiel', 'Daniel', 'Hosea', 'Joel', 'Amos', 'Obadiah', 'Jonah', 'Micah', 'Nahum', 'Habakkuk', 'Zephaniah', 'Haggai', 'Zechariah', 'Malachi', 'Matthew', 'Mark', 'Luke', 'John', 'Acts', 'Romans', '1 Corinthians', '2 Corinthians', 'Galatians', 'Ephesians', 'Philippians', 'Colossians', '1 Thessalonians', '2 Thessalonians', '1 Timothy', '2 Timothy', 'Titus', 'Philemon', 'Hebrews', 'James', '1 Peter', '2 Peter', '1 John', '2 John', '3 John', 'Jude', 'Revelation'];
-        const chaptersPerBook = [50, 40, 27, 36, 34, 24, 21, 4, 31, 24, 22, 25, 29, 36, 10, 13, 10, 42, 150, 31, 12, 8, 66, 52, 5, 48, 12, 14, 3, 9, 1, 4, 7, 3, 3, 3, 2, 14, 4, 28, 16, 24, 21, 28, 16, 16, 13, 6, 6, 4, 4, 5, 3, 6, 4, 3, 1, 13, 5, 5, 3, 5, 1, 1, 1, 22];
-
-        let text = "";
-        (async function(){
-            text = await fetch("../dist/kjv.txt").then(res => res.text());
-            console.log("letter count ", text.length );
-            //console.log("line count ", text.match(new RegExp("\n", "gm")).length )
-            console.log("verses count ", text.split(new RegExp("[0-9]+:[0-9]+", "gm")).length )
-            
-            text = text.replace(new RegExp("([0-9]+:[0-9]+)", "gm"), "\n@$1");
-
-            let verses = text.match(new RegExp("@([0-9]+:[0-9]+).*\n", "gm"));
-            //document.querySelector("#result").value = verses;
-            /**/
-            let bookIndex = -1;
-            const cleanVerses = verses.map( (x,i) => {
-                
-                return x.replace(new RegExp("@([0-9]+):([0-9]+)(.*)", "g"), function(m, chapter, verse, rest){
-                    if(chapter == 1 && verse == 1){
-                        bookIndex += 1;
-                    }
-                    //console.log(, rest)
-                    return books[bookIndex] + ` ${chapter}:${verse} ${rest}`;
-                });
-
-                //console.log( x, m )
-                //console.log(books[bookIndex])
-            } );
-
-            
-            document.querySelector("#result").value = cleanVerses.join("");
-            console.log("Total verses ", cleanVerses.length)
-        })
-
-
-        function addQuotes(){
-            const val = document.querySelector("#result").value;
-
-            //
-            //const k = val.replace(new RegExp("(.*)\n", "gm"), "'$1',")
-            const k = val.replace(new RegExp("^([a-zA-Z0-9 ]+)$", "gm"), "'$1',").replace(new RegExp("\n", "gm"), " ")
-            //console.log(k)
-            document.querySelector("#result").value = k;
-        }
-
-        function makeBibleData(){
-            let data = [];
-
-            return books.map( (name, index) => {
-                return { name, chapters:chaptersPerBook[index], tecartaId:canonNumbers[index] }
-            })
-        }
+        console.log("doing initDB");
+        initDB().then(()=>console.log('done initDB'));
 
         document.querySelector("#btn-run").addEventListener('click', async function(e){
             //addQuotes();
-            document.querySelector("#result").value = await populateResult();
+            //document.querySelector("#result").value = await populateResult();
 
             //document.querySelector("#result").value = JSON.stringify(makeBibleData());
+            getBible().then(res => {
+                console.log(res);
+                addVerses(res);
+            });
         })
 
+        
+        document.querySelector("#btn-get").addEventListener('click', async function(e){
+            //addQuotes();
+            //document.querySelector("#result").value = await populateResult();
+
+            //document.querySelector("#result").value = JSON.stringify(makeBibleData());
+            getAll().then(res => {
+                console.log(res.length);
+            });
+        })
         
     </script>
 </body>

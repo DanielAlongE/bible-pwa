@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/DanielAlongE/bible-pwa/issues"
   },
-  "homepage": "https://github.com/DanielAlongE/bible-pwa#readme"
+  "homepage": "https://github.com/DanielAlongE/bible-pwa#readme",
+  "dependencies": {
+    "idb": "^5.0.4"
+  }
 }
