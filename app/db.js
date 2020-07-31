@@ -3,6 +3,8 @@ import { openDB, deleteDB, wrap, unwrap } from 'https://unpkg.com/idb?module';
 const BIBLE_DB = "bible";
 const VERSES_TABLE = "verses";
 
+const KJV = "kjv";
+
 let dbPromise;
 
 export async function initDB() {
@@ -12,8 +14,12 @@ export async function initDB() {
             case 0:
                 const verses = db.createObjectStore(VERSES_TABLE, {keyPath: 'id', autoIncrement: true });
                 verses.createIndex('uuid', 'uuid', { unique: true })
+
+                const kjv = db.createObjectStore(KJV, {keyPath: 'id', autoIncrement: true });
+                kjv.createIndex('bId', 'bId');
+                kjv.createIndex('cId', 'cId');                
+  
             case 1:
-                
             }
     }
   }
@@ -21,7 +27,7 @@ export async function initDB() {
 }
 
 
-export async function addVerses(items, table=VERSES_TABLE ) {
+export async function addVerses(items, table=KJV ) {
 
     const db = dbPromise;
 
@@ -55,7 +61,21 @@ export async function addVerses(items, table=VERSES_TABLE ) {
 
   }
 
-  export async function getAll(table=VERSES_TABLE) {
+  export async function update(item, table=KJV ) {
+
+    const db = dbPromise;
+
+    const tx = db.transaction(table, 'readwrite');
+    const store = tx.objectStore(table);
+
+    return new Promise(resolve => {
+      console.log('Update item: ', item);
+        resolve(store.put(item));
+    }).catch(err=> err);
+
+  }
+
+  export async function getAll(table=KJV) {
 
     try {
 
@@ -101,7 +121,7 @@ export async function search1(term="kjv-64", table=VERSES_TABLE) {
     }
   }
 
-export async function search(term="kjv-64", table=VERSES_TABLE) {
+export async function search(term="kjv-65-22", table=KJV) {
 
     try {
 
@@ -112,27 +132,27 @@ export async function search(term="kjv-64", table=VERSES_TABLE) {
 
         var tx = db.transaction(table, 'readonly');
         var store = tx.objectStore(table);
-        const index = store.index('uuid');
-        let cursor =  index.openCursor( IDBKeyRange.bound("kjv-65-1-1", "kjv-65-22-1") ); //, "kjv-65-1-24"
+        const index = store.index('cId');
+        let cursor =  await index.openCursor( IDBKeyRange.bound(term, term) ); //
 
         //range = IDBKeyRange.bound(lower, upper);
         //range = IDBKeyRange.upperBound(upper);
         //range = IDBKeyRange.lowerBound(lower);
 
-        Promise.resolve(cursor)
-        .then(function logItems(cursor) {
-        if (!cursor) {
-          return;
-        }
-        console.log('Cursored at:', cursor.key);
-        for (var field in cursor.value) {
-          console.log(cursor.value[field]);
-        }
-        return cursor.continue().then(logItems);
-      }).then(function() {
-        console.log('Done cursoring');
-      })
+        let result = [];
 
+        while (cursor) {
+          //if(cursor.key.indexOf(term) == 0){}
+            console.log(cursor.key);                
+          result.push(cursor.value);
+          //console.warn(cursor.key)
+        cursor = await cursor.continue();
+
+      }
+
+      console.log(result);
+
+      return result; //Promise.resolve(result);
 
     } catch (error) {
       console.log(error);
