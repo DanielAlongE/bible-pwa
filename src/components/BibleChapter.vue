@@ -24,13 +24,14 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { getChapter, addVerses, add, getTranslations } from "@/shared/idbService.ts";
-import bibleData, { BibleData } from "@/shared/bibleService.ts";
+import { bibleData } from "@/shared/bibleService.ts";
+import { BibleBookData } from '../shared/types';
 
 @Component
 export default class BibleChapter extends Vue {
   @Prop() private msg!: string;
   translations: any[] = [];
-  books: BibleData[] = [];
+  books: BibleBookData[] = [];
   verses: any[] = [];
 
   get chapters(){

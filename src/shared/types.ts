@@ -1,3 +1,10 @@
+export interface BibleBookData {
+    index: number
+    name: string
+    chapters: number
+    tecartaId: number
+}
+
 export interface BibleInfo {
     id?: number
     uuid: string

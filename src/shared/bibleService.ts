@@ -1,12 +1,6 @@
+import { BibleBookData } from './types';
 
-export interface BibleData {
-    index: number
-    name: string
-    chapters: number
-    tecartaId: number
-}
-
-const bibleData: BibleData[] = [
+export const bibleData: BibleBookData[] = [
     {index:0, "name":"Genesis","chapters":50,"tecartaId":1},
     {index:1, "name":"Exodus","chapters":40,"tecartaId":2},
     {index:2, "name":"Leviticus","chapters":27,"tecartaId":3},
@@ -75,4 +69,18 @@ const bibleData: BibleData[] = [
     {index:65, "name":"Revelation","chapters":22,"tecartaId":73}
 ];
 
-export default bibleData;
+export async function importBibleTranslation(fileUrl: string){
+
+    try {
+
+        if(!/.+\.zip$/.test(fileUrl)){
+           throw new Error("File is a zip file");
+        }
+
+        
+        
+    } catch (error) {
+        console.log(error)
+    }
+
+}
