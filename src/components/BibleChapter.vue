@@ -2,9 +2,16 @@
   <div class="bookChapter">
     <h1>{{ msg }}</h1>
     <div>
+      <select v-model="translationId">
+        <option v-for="translation in translations" :key="translation.uuid" :value="translation.uuid">
+          {{translation.code}}
+        </option>
+      </select>
+
       <select v-model="bookId">
         <option v-for="book in books" :key="book.index" :value="book.index">{{book.name}}</option>
       </select>
+
       <select v-model="chapterId">
         <option v-for="chapter in chapters" :key="chapter" :value="chapter">{{chapter}}</option>
       </select>
@@ -16,13 +23,13 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { getChapter, addVerses } from "@/shared/idbService.ts";
-import bibleData, { BibleData } from "@/shared/bibleData.ts";
+import { getChapter, addVerses, add, getTranslations } from "@/shared/idbService.ts";
+import bibleData, { BibleData } from "@/shared/bibleService.ts";
 
 @Component
 export default class BibleChapter extends Vue {
   @Prop() private msg!: string;
-
+  translations: any[] = [];
   books: BibleData[] = [];
   verses: any[] = [];
 
@@ -35,7 +42,7 @@ export default class BibleChapter extends Vue {
     return Array(count).fill(null).map((_,i) => i+1)
   }
 
-  translation: string = "kjv";
+  translationId: string = "kjv";
   bookId: number = 0;
   chapterId: number = 1;
   verseId: number = 1;
@@ -43,21 +50,29 @@ export default class BibleChapter extends Vue {
   created(){
     console.log("Yaay I have been created!");
 
+    this.initTranslations();
+
     this.initBooks();
 
     getChapter("kjv-0-1").then(res => this.verses = res);
+
+    //add({uuid:"kjv", code:"KJV", name:"King James Version"}, "translations")
 
     //this.populateDB();
   }
 
   goToChapter(){
-    const { translation, bookId, chapterId } = this;
-    const key = `${translation}-${bookId}-${chapterId}`;
+    const { translationId, bookId, chapterId } = this;
+    const key = `${translationId}-${bookId}-${chapterId}`;
     getChapter(key).then(res => this.verses = res);
   }
 
   initBooks(){
     this.books = [ ...bibleData ];
+  }
+
+  async initTranslations(){
+    this.translations = await getTranslations();
   }
 
 

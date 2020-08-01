@@ -2,7 +2,8 @@ import { openDB } from "idb";
 
 const BIBLE_DB = "bible";
 const VERSES_TABLE = "verses";
-const VERSION = 1;
+const TRANSLATION_TABLE = "translations";
+const VERSION = 2;
 
 export async function connnectDB () {
     return await openDB( BIBLE_DB, VERSION, {
@@ -12,17 +13,44 @@ export async function connnectDB () {
                     //const verses = db.createObjectStore(VERSES_TABLE, {keyPath: 'id', autoIncrement: true });
                     //verses.createIndex('uuid', 'uuid', { unique: true })
     
-                    const kjv = db.createObjectStore(VERSES_TABLE, {keyPath: 'id', autoIncrement: true });
-                    kjv.createIndex('uuid', 'uuid', { unique: true })
-                    kjv.createIndex('bId', 'bId');
-                    kjv.createIndex('cId', 'cId');                
+                    const v = db.createObjectStore(VERSES_TABLE, {keyPath: 'id', autoIncrement: true });
+                    v.createIndex('uuid', 'uuid', { unique: true })
+                    v.createIndex('bId', 'bId');
+                    v.createIndex('cId', 'cId');                
       
                 case 1:
+                  const t = db.createObjectStore(TRANSLATION_TABLE, {keyPath: 'id', autoIncrement: true });
+                  t.createIndex('uuid', 'uuid', { unique: true });              
+
             }
         }
     });
 }
 
+export async function add<T>(item:T, table:string): Promise<any> {
+  const db = await connnectDB();
+
+  const tx = db.transaction(table, 'readwrite');
+  const store = tx.objectStore(table);
+  return store.add(item);
+}
+
+export async function getAll<T>(table: string): Promise<T[]> {
+
+  try {
+
+    const db = await connnectDB();
+
+      const tx = db.transaction(table, 'readonly');
+      var store = tx.objectStore(table);
+
+      return store.getAll();    
+
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}
 
 export async function getChapter(key: string): Promise<any[]> {
 
@@ -87,3 +115,7 @@ export async function getChapter(key: string): Promise<any[]> {
       });
 
   }
+
+export function getTranslations(){
+  return getAll<any>(TRANSLATION_TABLE);
+}
