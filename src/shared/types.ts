@@ -23,5 +23,4 @@ export interface BibleVerse {
     v: number
     t: string
     text: string
-    bookIndexes: number[]    
 }

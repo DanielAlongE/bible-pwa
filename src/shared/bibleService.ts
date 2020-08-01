@@ -1,4 +1,6 @@
 import { BibleBookData } from './types';
+//import PizZip from 'pizzip/dist/pizzip.min.js';
+declare let PizZip:any;
 
 export const bibleData: BibleBookData[] = [
     {index:0, "name":"Genesis","chapters":50,"tecartaId":1},
@@ -77,7 +79,10 @@ export async function importBibleTranslation(fileUrl: string){
            throw new Error("File is a zip file");
         }
 
-        
+        const versesProps = ["uuid", "bId", "cId", "t", "b", "c", "v", "text"];
+        const infoProps = ["uuid", "code", "name", "bookIndexes"];
+
+        console.log({PizZip})
         
     } catch (error) {
         console.log(error)
