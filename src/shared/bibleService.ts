@@ -1,4 +1,5 @@
-import { BibleBookData } from './types';
+import { BibleBookData, BibleVerse, BibleInfo } from './types';
+import { addVerses, VERSES_TABLE, TRANSLATION_TABLE, add } from './idbService';
 //import PizZip from 'pizzip/dist/pizzip.min.js';
 declare let PizZip:any;
 
@@ -71,21 +72,86 @@ export const bibleData: BibleBookData[] = [
     {index:65, "name":"Revelation","chapters":22,"tecartaId":73}
 ];
 
+const versesProps = ["uuid", "bId", "cId", "t", "b", "c", "v", "text"];
+const infoProps = ["uuid", "code", "name", "bookIndexes"];
+
+function isValidInfo(info: BibleInfo){
+    return infoProps.every( x => info.hasOwnProperty(x) );
+}
+
+function isValidVerses(verses: BibleVerse[]){
+    if(!Array.isArray(verses)){
+        return false;
+    }
+
+    if(verses.length === 0){
+        return false;
+    }
+
+    const keys = Object.keys(verses[0]);
+
+    console.log({keys})
+
+    return versesProps.every( prop => keys.includes(prop) )
+}
+
+function prepareVerses(verses: BibleVerse[]){
+    return verses.map( verse => {
+        const { id, ...rest } = verse;
+        return { ...rest }
+    })
+}
+
 export async function importBibleTranslation(fileUrl: string){
 
-    try {
+        try {
 
         if(!/.+\.zip$/.test(fileUrl)){
-           throw new Error("File is a zip file");
+            throw new Error("File is not a zip file");
         }
 
-        const versesProps = ["uuid", "bId", "cId", "t", "b", "c", "v", "text"];
-        const infoProps = ["uuid", "code", "name", "bookIndexes"];
+        const zip = new PizZip();
+        const content = await fetch(fileUrl).then( r => r.arrayBuffer() );
 
-        console.log({PizZip})
+        if(!content){
+            throw new Error("Unable to fetch file");
+        }
+        zip.load(content)
+
+        const rawFile = zip.file("data.json");
+
+        if(!rawFile){
+            throw new Error("File is invalid");
+        }
+
+        const dataString = rawFile.asText();
+
+        if(!dataString){
+            throw new Error("File is corrupted!");
+        }
+    
+        const data = JSON.parse(dataString);
+
+        const { info, verses:_verses } = data;
+
+        if(!isValidInfo(info) && !isValidVerses(_verses)){
+            throw new Error("File contains inaccurate data!");
+        }
+
+        const verses = prepareVerses(_verses);
+
+        //add verse to db
+        return addVerses(verses, VERSES_TABLE)
+            .then(() => add(info, TRANSLATION_TABLE) ) //add info to 
+            .catch(() => {
+                //rollback action
+                throw new Error("Unable to populate database!");
+            });
+
         
-    } catch (error) {
-        console.log(error)
     }
+    catch( err ){
+        return Promise.reject(err)
+    };
 
 }

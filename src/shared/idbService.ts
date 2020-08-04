@@ -1,8 +1,8 @@
 import { openDB } from "idb";
 
 const BIBLE_DB = "bible";
-const VERSES_TABLE = "verses";
-const TRANSLATION_TABLE = "translations";
+export const VERSES_TABLE = "verses";
+export const TRANSLATION_TABLE = "translations";
 const VERSION = 2;
 
 export async function connnectDB () {
