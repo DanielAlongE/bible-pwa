@@ -13,7 +13,9 @@
     "url": "git+https://github.com/DanielAlongE/bible-pwa.git"
   },
   "dependencies": {
+    "@chakra-ui/vue": "^0.6.1",
     "core-js": "^3.6.5",
+    "emotion": "^10.0.27",
     "idb": "^5.0.4",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
