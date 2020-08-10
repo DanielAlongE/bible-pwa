@@ -7,6 +7,9 @@
         Chakra Consumed! ⚡️
       </c-button>
     </c-box>
+    <c-box bg="tomato" w="100%" p="4" color="white">
+      This is the Box
+    </c-box>
   </div>
 
 </template>
