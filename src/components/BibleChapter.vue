@@ -1,40 +1,23 @@
 <template>
   <div class="bookChapter">
-    <h1>{{ msg }}</h1>
-    <div>
-      <select v-model="translationId">
-        <option v-for="translation in translations" :key="translation.uuid" :value="translation.uuid">
-          {{translation.code}}
-        </option>
-      </select>
-
-      <select v-model="bookId">
-        <option v-for="book in books" :key="book.index" :value="book.index">{{book.name}}</option>
-      </select>
-
-      <select v-model="chapterId">
-        <option v-for="chapter in chapters" :key="chapter" :value="chapter">{{chapter}}</option>
-      </select>
-      <button @click="goToChapter">Go</button>
-    </div>
 
     <c-flex width="100vw" align="start">
+      <c-flex :flex="1" >      
+        <c-radio-group v-if="translations" v-model="translationId">
+          <c-radio as="c-button" v-for="translation in translations" :key="translation.uuid" :value="translation.uuid">{{translation.code}}</c-radio>
+        </c-radio-group>
+      </c-flex>
 
       <c-flex :flex="1" bg="green.50" align="flex-end">
-        <c-radio-group v-model="bookId">
+        <c-radio-group v-if="books" v-model="_bookId">
           <c-radio v-for="book in books" :key="book.index" :value="`${book.index}`">{{book.name}}</c-radio>
         </c-radio-group>
       </c-flex>
 
       <c-flex :flex="1" bg="blue.50" align="center" justify="center">
-        <c-radio-group v-model="chapterId">
-          <c-radio v-for="chapter in chapters" :key="`some-${chapter}`" :value="chapter">{{chapter}}</c-radio>
+        <c-radio-group v-if="chapters" v-model="_chapterId">
+          <c-radio v-for="chapter in chapters" :key="`some-${chapter}`" :value="`${chapter}`">{{chapter}}</c-radio>
         </c-radio-group>
-
-      </c-flex>
-
-      <c-flex :flex="1" >
-
       </c-flex>
 
     </c-flex>
@@ -56,9 +39,9 @@
 import { Component, Watch, Prop, Vue } from "vue-property-decorator";
 import { getChapter, addVerses, add, getTranslations } from "@/shared/idbService.ts";
 import { bibleData } from "@/shared/bibleService.ts";
-import { BibleBookData, BibleVerse } from '../shared/types';
+import { BibleBookData, BibleVerse, BibleInfo } from '../shared/types';
 
-import { CStack, CBox, CText, CFlex, CRadio, CRadioGroup } from "@chakra-ui/vue"
+import { CStack, CBox, CText, CFlex, CRadio, CRadioGroup, CButton } from "@chakra-ui/vue"
 
 @Component({
   components: {
@@ -67,31 +50,44 @@ import { CStack, CBox, CText, CFlex, CRadio, CRadioGroup } from "@chakra-ui/vue"
     CText,
     CFlex,
     CRadio, 
-    CRadioGroup
+    CRadioGroup,
+    CButton
   }
 })
 export default class BibleChapter extends Vue {
   @Prop() private msg!: string;
 
-  translations: any[] = [];
+  translations: BibleInfo[] = [];
   books: BibleBookData[] = [];
   verses: BibleVerse[] = [];
 
   get chapters(){
-    const count = this.verses.length
-    //this.books[this.bookId].chapters;
+    const count = this.books[this.bookId].chapters;
     console.log(count, this.chapterId)
     if(count < this.chapterId){
       this.chapterId = 1;
     }
-    return this.verses.map(x => x.v)
-    //Array(count).fill(null).map((_,i) => i+1)
+    return Array(count).fill(null).map((_,i) => i+1)
   }
 
   translationId: string = "kjv";
   bookId: number = 0;
   chapterId: number = 1;
   verseId: number = 1;
+
+  get _bookId(): string{
+    return `${this.bookId}`;
+  }
+  set _bookId(val:string){
+    this.bookId = +val;
+  }
+
+  get _chapterId(): string{
+    return `${this.chapterId}`;
+  }
+  set _chapterId(val:string){
+    this.chapterId = +val;
+  }  
 
   created(){
     console.log("Yaay I have been created!");
@@ -117,7 +113,7 @@ export default class BibleChapter extends Vue {
   @Watch('bookId') 
   actionOnBookId(){
     console.log("watch bookId")
-    //this.goToChapter()
+    this.goToChapter()
   }  
 
   @Watch('chapterId')

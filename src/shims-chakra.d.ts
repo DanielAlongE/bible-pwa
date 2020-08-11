@@ -14,5 +14,6 @@ declare module "@chakra-ui/vue" {
   export class CFlex  extends Vue {}
   export class CRadio  extends Vue {}
   export class CRadioGroup  extends Vue {}
+  export class CButton  extends Vue {}
 
 }
