@@ -8,7 +8,7 @@
         </c-radio-group>
       </c-flex>
 
-      <c-flex :flex="1" height="50vh" overflowY="scroll" bg="green.50">
+      <c-flex :flex="2" height="50vh" overflowY="scroll" bg="green.50">
         <c-radio-group v-if="books" v-model="_bookId">
           <c-radio v-for="book in books" :key="book.index" :value="`${book.index}`">{{book.name}}</c-radio>
         </c-radio-group>
