@@ -18,24 +18,23 @@
       <button @click="goToChapter">Go</button>
     </div>
 
-    <c-flex width="100vw" align="center">
+    <c-flex width="100vw" align="start">
+
       <c-flex :flex="1" bg="green.50" align="flex-end">
         <c-radio-group v-model="bookId">
-          <c-radio value="1">First Hokage</c-radio>
-
+          <c-radio v-for="book in books" :key="book.index" :value="`${book.index}`">{{book.name}}</c-radio>
         </c-radio-group>
       </c-flex>
+
       <c-flex :flex="1" bg="blue.50" align="center" justify="center">
-        <c-text text-align="center" bg="orange.50">
-          Box 2
-        </c-text>
+        <c-radio-group v-model="chapterId">
+          <c-radio v-for="chapter in chapters" :key="`some-${chapter}`" :value="chapter">{{chapter}}</c-radio>
+        </c-radio-group>
+
       </c-flex>
+
       <c-flex :flex="1" >
-        <c-box>
-            <c-text bg="tomato" color="white">
-              Box 3
-            </c-text>
-        </c-box>        
+
       </c-flex>
 
     </c-flex>
@@ -54,19 +53,21 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Watch, Prop, Vue } from "vue-property-decorator";
 import { getChapter, addVerses, add, getTranslations } from "@/shared/idbService.ts";
 import { bibleData } from "@/shared/bibleService.ts";
-import { BibleBookData } from '../shared/types';
+import { BibleBookData, BibleVerse } from '../shared/types';
 
-import { CStack, CBox, CText, CFlex } from "@chakra-ui/vue"
+import { CStack, CBox, CText, CFlex, CRadio, CRadioGroup } from "@chakra-ui/vue"
 
 @Component({
   components: {
     CStack, 
     CBox, 
     CText,
-    CFlex
+    CFlex,
+    CRadio, 
+    CRadioGroup
   }
 })
 export default class BibleChapter extends Vue {
@@ -74,15 +75,17 @@ export default class BibleChapter extends Vue {
 
   translations: any[] = [];
   books: BibleBookData[] = [];
-  verses: any[] = [];
+  verses: BibleVerse[] = [];
 
   get chapters(){
-    const count = this.books[this.bookId].chapters;
+    const count = this.verses.length
+    //this.books[this.bookId].chapters;
     console.log(count, this.chapterId)
     if(count < this.chapterId){
       this.chapterId = 1;
     }
-    return Array(count).fill(null).map((_,i) => i+1)
+    return this.verses.map(x => x.v)
+    //Array(count).fill(null).map((_,i) => i+1)
   }
 
   translationId: string = "kjv";
@@ -97,12 +100,32 @@ export default class BibleChapter extends Vue {
 
     this.initBooks();
 
-    getChapter("kjv-0-1").then(res => this.verses = res);
+    getChapter(`${this.translationId}-0-1`).then(res => this.verses = res);
 
     //add({uuid:"kjv", code:"KJV", name:"King James Version"}, "translations")
 
     //this.populateDB();
   }
+
+  
+  @Watch('translationId') 
+  actionOnTranslationId(){
+    console.log("watch translationId")
+    this.goToChapter()
+  }
+
+  @Watch('bookId') 
+  actionOnBookId(){
+    console.log("watch bookId")
+    //this.goToChapter()
+  }  
+
+  @Watch('chapterId')
+  actionOnChapterId(){
+    console.log("watch chapterId")
+    this.goToChapter()
+  }  
+
 
   goToChapter(){
     const { translationId, bookId, chapterId } = this;
