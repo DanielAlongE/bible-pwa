@@ -10,7 +10,7 @@
 
       <c-flex :flex="2" height="50vh" overflowY="scroll" bg="green.50">
         <c-radio-group v-if="books" v-model="_bookId">
-          <c-radio v-for="book in books" :key="book.index" :value="`${book.index}`">{{book.name}}</c-radio>
+          <c-radio v-for="book in filteredBooks" :key="book.index" :value="`${book.index}`">{{book.name}}</c-radio>
         </c-radio-group>
       </c-flex>
 
@@ -60,6 +60,19 @@ export default class BibleChapter extends Vue {
   translations: BibleInfo[] = [];
   books: BibleBookData[] = [];
   verses: BibleVerse[] = [];
+
+  availableBooks: number[] = [];
+
+  get filteredBooks(){
+
+    if(this.availableBooks.length == 0){
+      return this.books;
+    }
+    
+    return this.books.filter( x => {
+      return this.availableBooks.includes(x.index);
+    })
+  }
 
   get chapters(){
     const count = this.books[this.bookId].chapters;
@@ -111,6 +124,8 @@ export default class BibleChapter extends Vue {
   @Watch('translationId') 
   actionOnTranslationId(){
     console.log("watch translationId")
+    const bibleInfo = this.translations.find( x => x.uuid == this.translationId );
+    this.availableBooks = bibleInfo && bibleInfo.bookIndexes || []; 
     this.goToChapter()
   }
 
