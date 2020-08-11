@@ -10,6 +10,8 @@
     <c-box bg="tomato" w="100%" p="4" color="white">
       This is the Box
     </c-box>
+
+
   </div>
 
 </template>
@@ -17,13 +19,17 @@
 <script>
 // @ is an alias to /src
 import BibleImport from "@/components/BibleImport.vue";
-import { CBox, CButton } from '@chakra-ui/vue'
+import { CStack, CText, CBox, CButton } from '@chakra-ui/vue'
+
 export default {
   name: "Import",
   components: {
     BibleImport,
     CBox,
-    CButton
+    CButton,
+
+    CText,
+    CStack
   }
 };
 </script>

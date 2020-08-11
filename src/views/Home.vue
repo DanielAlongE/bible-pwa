@@ -11,7 +11,7 @@ import BibleChapter from "@/components/BibleChapter.vue";
 export default {
   name: "Home",
   components: {
-    BibleChapter
+    BibleChapter,
   }
 };
 </script>

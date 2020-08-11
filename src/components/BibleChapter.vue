@@ -17,7 +17,39 @@
       </select>
       <button @click="goToChapter">Go</button>
     </div>
-    <p v-for="verse in verses" :key="verse.id">{{verse.v}} {{verse.text}}</p>
+
+    <c-flex width="100vw" align="center">
+      <c-flex :flex="1" bg="green.50" align="flex-end">
+        <c-radio-group v-model="bookId">
+          <c-radio value="1">First Hokage</c-radio>
+
+        </c-radio-group>
+      </c-flex>
+      <c-flex :flex="1" bg="blue.50" align="center" justify="center">
+        <c-text text-align="center" bg="orange.50">
+          Box 2
+        </c-text>
+      </c-flex>
+      <c-flex :flex="1" >
+        <c-box>
+            <c-text bg="tomato" color="white">
+              Box 3
+            </c-text>
+        </c-box>        
+      </c-flex>
+
+    </c-flex>
+
+    <c-box :m="['2', '3']" >
+      <c-box class="chapter" :spacing="3">
+          <c-text v-for="verse in verses" :key="verse.id">
+            <c-text fontWeight="bold" color="red.900" as="span">{{verse.v}}</c-text>
+            {{verse.text}}
+          </c-text>
+      </c-box>      
+    </c-box>
+
+
   </div>
 </template>
 
@@ -27,9 +59,19 @@ import { getChapter, addVerses, add, getTranslations } from "@/shared/idbService
 import { bibleData } from "@/shared/bibleService.ts";
 import { BibleBookData } from '../shared/types';
 
-@Component
+import { CStack, CBox, CText, CFlex } from "@chakra-ui/vue"
+
+@Component({
+  components: {
+    CStack, 
+    CBox, 
+    CText,
+    CFlex
+  }
+})
 export default class BibleChapter extends Vue {
   @Prop() private msg!: string;
+
   translations: any[] = [];
   books: BibleBookData[] = [];
   verses: any[] = [];
@@ -92,11 +134,11 @@ export default class BibleChapter extends Vue {
       })
   }
 
+
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 
 </style>
