@@ -2,19 +2,19 @@
   <div class="bookChapter">
 
     <c-flex width="100vw" align="start">
-      <c-flex :flex="1" >      
+      <c-flex :flex="1" height="50vh" overflowY="scroll" >      
         <c-radio-group v-if="translations" v-model="translationId">
           <c-radio as="c-button" v-for="translation in translations" :key="translation.uuid" :value="translation.uuid">{{translation.code}}</c-radio>
         </c-radio-group>
       </c-flex>
 
-      <c-flex :flex="1" bg="green.50" align="flex-end">
+      <c-flex :flex="1" height="50vh" overflowY="scroll" bg="green.50">
         <c-radio-group v-if="books" v-model="_bookId">
           <c-radio v-for="book in books" :key="book.index" :value="`${book.index}`">{{book.name}}</c-radio>
         </c-radio-group>
       </c-flex>
 
-      <c-flex :flex="1" bg="blue.50" align="center" justify="center">
+      <c-flex :flex="1" height="50vh" overflowY="scroll" bg="blue.50" align="center" justify="center">
         <c-radio-group v-if="chapters" v-model="_chapterId">
           <c-radio v-for="chapter in chapters" :key="`some-${chapter}`" :value="`${chapter}`">{{chapter}}</c-radio>
         </c-radio-group>
