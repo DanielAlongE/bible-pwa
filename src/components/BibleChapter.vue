@@ -1,26 +1,50 @@
 <template>
   <div class="bookChapter">
+  <div>
 
-    <c-flex width="100vw" align="start">
-      <c-flex :flex="1" height="50vh" overflowY="scroll" >      
-        <c-radio-group v-if="translations" v-model="translationId">
-          <c-radio as="c-button" v-for="translation in translations" :key="translation.uuid" :value="translation.uuid">{{translation.code}}</c-radio>
-        </c-radio-group>
-      </c-flex>
-
-      <c-flex :flex="2" height="50vh" overflowY="scroll" bg="green.50">
-        <c-radio-group v-if="books" v-model="_bookId">
-          <c-radio v-for="book in filteredBooks" :key="book.index" :value="`${book.index}`">{{book.name}}</c-radio>
-        </c-radio-group>
-      </c-flex>
-
-      <c-flex :flex="1" height="50vh" overflowY="scroll" bg="blue.50">
-        <c-radio-group v-if="chapters" v-model="_chapterId">
-          <c-radio v-for="chapter in chapters" :key="`some-${chapter}`" :value="`${chapter}`">{{chapter}}</c-radio>
-        </c-radio-group>
-      </c-flex>
-
+    <c-flex align="center" :m="[0, '10px']" justify="space-between">
+      <c-button>&lt;</c-button>
+      <c-button ref="btnRef" @click="isOpen =true">{{title}}</c-button>
+      <c-button>&gt;</c-button>
     </c-flex>
+    
+
+    <c-drawer :isOpen="isOpen" placement="top" :on-close="close" :initialFocusRef="()=>$refs.inputInsideModal">
+      <c-drawer-overlay />
+      <c-drawer-content>
+      <c-drawer-close-button />
+      <c-drawer-header>{{title}}</c-drawer-header>
+
+      <c-drawer-body>
+
+        <c-flex width="100vw" align="start">
+          <c-flex :flex="1" height="50vh" overflowY="scroll" >      
+            <c-radio-group v-if="translations" v-model="translationId">
+              <c-radio as="c-button" v-for="translation in translations" :key="translation.uuid" :value="translation.uuid">{{translation.code}}</c-radio>
+            </c-radio-group>
+          </c-flex>
+
+          <c-flex :flex="2" height="50vh" overflowY="scroll" bg="green.50">
+            <c-radio-group v-if="books" v-model="_bookId">
+              <c-radio v-for="book in filteredBooks" :key="book.index" :value="`${book.index}`">{{book.name}}</c-radio>
+            </c-radio-group>
+          </c-flex>
+
+          <c-flex :flex="1" height="50vh" overflowY="scroll" bg="blue.50">
+            <c-radio-group v-if="chapters" v-model="_chapterId">
+              <c-radio v-for="chapter in chapters" :key="`some-${chapter}`" :value="`${chapter}`">{{chapter}}</c-radio>
+            </c-radio-group>
+          </c-flex>
+
+        </c-flex>
+
+      </c-drawer-body>
+
+      </c-drawer-content>
+    </c-drawer>
+  </div>
+
+
 
     <c-box :m="['2', '3']" >
       <c-box class="chapter" :spacing="3">
@@ -41,7 +65,15 @@ import { getChapter, addVerses, add, getTranslations } from "@/shared/idbService
 import { bibleData } from "@/shared/bibleService.ts";
 import { BibleBookData, BibleVerse, BibleInfo } from '../shared/types';
 
-import { CStack, CBox, CText, CFlex, CRadio, CRadioGroup, CButton } from "@chakra-ui/vue"
+import { CStack, CBox, CText, CFlex, CRadio, CRadioGroup, CButton,
+  CDrawer,
+  CDrawerBody,
+  CDrawerFooter,
+  CDrawerHeader,
+  CDrawerOverlay,
+  CDrawerContent,
+  CDrawerCloseButton,
+} from "@chakra-ui/vue"
 
 @Component({
   components: {
@@ -51,7 +83,14 @@ import { CStack, CBox, CText, CFlex, CRadio, CRadioGroup, CButton } from "@chakr
     CFlex,
     CRadio, 
     CRadioGroup,
-    CButton
+    CButton,
+    CDrawer,
+    CDrawerBody,
+    CDrawerFooter,
+    CDrawerHeader,
+    CDrawerOverlay,
+    CDrawerContent,
+    CDrawerCloseButton,    
   }
 })
 export default class BibleChapter extends Vue {
@@ -63,12 +102,31 @@ export default class BibleChapter extends Vue {
 
   availableBooks: number[] = [];
 
+  bookName: string = "";
+
+  isOpen: boolean = false;
+
+  close(){
+    this.isOpen = false;
+  }
+
+  get title():string {
+    const translation = this.translations.find(x => x.uuid == this.translationId )
+    const currentTranslation = translation && translation['code'] || "";
+    const bookName = this.books && this.books[this.bookId]['name'] || "";
+    const chapter = this.chapterId;
+
+    console.log(this.translations, {translation, currentTranslation, bookName, chapter})
+
+    return `${bookName} ${chapter} - ${currentTranslation}`;
+  }
+
   get filteredBooks(){
 
     if(this.availableBooks.length == 0){
       return this.books;
     }
-    
+
     return this.books.filter( x => {
       return this.availableBooks.includes(x.index);
     })
@@ -132,6 +190,9 @@ export default class BibleChapter extends Vue {
   @Watch('bookId') 
   actionOnBookId(){
     console.log("watch bookId")
+    const translation = this.translations.find(x => x.uuid == this.translationId )
+    this.bookName  = translation && translation['code'] || "";
+  
     this.goToChapter()
   }  
 

@@ -18,7 +18,14 @@ declare module "@chakra-ui/vue" {
   export class CInput  extends Vue {}
   export class CInputElement  extends Vue {}
   export class CInputRightElement extends Vue {}
-  export class CInputAddon  extends Vue {}
-  export class CInputGroup  extends Vue {}
-  export class CCircularProgress  extends Vue {}
+  export class CInputAddon extends Vue {}
+  export class CInputGroup extends Vue {}
+  export class CCircularProgress extends Vue {}
+  export class CDrawer extends Vue {}
+  export class CDrawerBody extends Vue {}
+  export class CDrawerFooter extends Vue {}
+  export class CDrawerHeader extends Vue {}
+  export class CDrawerOverlay extends Vue {}
+  export class CDrawerContent extends Vue {}
+  export class CDrawerCloseButton extends Vue {}
 }
