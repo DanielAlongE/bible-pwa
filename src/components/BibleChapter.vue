@@ -96,7 +96,11 @@ export default class BibleChapter extends Vue {
 
     this.initBooks();
 
-    getChapter(`${this.translationId}-0-1`).then(res => this.verses = res);
+    this.getLastHistory();
+
+    this.goToChapter();
+
+    //getChapter(`${this.translationId}-0-1`).then(res => this.verses = res);
 
     //add({uuid:"kjv", code:"KJV", name:"King James Version"}, "translations")
 
@@ -127,10 +131,24 @@ export default class BibleChapter extends Vue {
     const { translationId, bookId, chapterId } = this;
     const key = `${translationId}-${bookId}-${chapterId}`;
     getChapter(key).then(res => this.verses = res);
+
+    this.addToHistory();
   }
 
   initBooks(){
     this.books = [ ...bibleData ];
+  }
+
+  addToHistory(){
+    localStorage.setItem("translationId", this.translationId)
+    localStorage.setItem("bookId", `${this.bookId}`)
+    localStorage.setItem("chapterId", `${this.chapterId}`)
+  }
+
+  getLastHistory(){
+    this.translationId = localStorage.getItem('translationId') || "";
+    this.bookId = +(localStorage.getItem('bookId') || 1);
+    this.chapterId = +(localStorage.getItem('chapterId') || 1);
   }
 
   async initTranslations(){
