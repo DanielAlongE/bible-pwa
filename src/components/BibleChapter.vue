@@ -14,7 +14,7 @@
         </c-radio-group>
       </c-flex>
 
-      <c-flex :flex="1" height="50vh" overflowY="scroll" bg="blue.50" align="center" justify="center">
+      <c-flex :flex="1" height="50vh" overflowY="scroll" bg="blue.50">
         <c-radio-group v-if="chapters" v-model="_chapterId">
           <c-radio v-for="chapter in chapters" :key="`some-${chapter}`" :value="`${chapter}`">{{chapter}}</c-radio>
         </c-radio-group>
