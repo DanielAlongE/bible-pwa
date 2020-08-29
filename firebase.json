@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "site": "bibleroni",
     "public": "dist",
     "ignore": [
       "firebase.json",
