@@ -1,87 +1,112 @@
 <template>
   <div class="bookChapter">
-  <div>
+    <div style="position:fixed">
+      <c-flex align="center" :m="[0, '10px']" justify="space-between">
+        <c-button>&lt;</c-button>
+        <c-button ref="btnRef" @click="isOpen = true">{{ title }}</c-button>
+        <c-button>&gt;</c-button>
+      </c-flex>
 
-    <c-flex align="center" :m="[0, '10px']" justify="space-between">
-      <c-button>&lt;</c-button>
-      <c-button ref="btnRef" @click="isOpen =true">{{title}}</c-button>
-      <c-button>&gt;</c-button>
-    </c-flex>
-    
+      <c-drawer
+        :isOpen="isOpen"
+        placement="top"
+        :on-close="close"
+        :initialFocusRef="() => $refs.inputInsideModal"
+      >
+        <c-drawer-overlay />
+        <c-drawer-content>
+          <c-drawer-close-button />
+          <c-drawer-header>{{ title }}</c-drawer-header>
 
-    <c-drawer :isOpen="isOpen" placement="top" :on-close="close" :initialFocusRef="()=>$refs.inputInsideModal">
-      <c-drawer-overlay />
-      <c-drawer-content>
-      <c-drawer-close-button />
-      <c-drawer-header>{{title}}</c-drawer-header>
+          <c-drawer-body>
+            <c-flex width="100vw" align="start">
+              <c-flex :flex="1" height="50vh" overflowY="scroll">
+                <c-radio-group v-if="translations" v-model="translationId">
+                  <c-radio
+                    as="c-button"
+                    v-for="translation in translations"
+                    :key="translation.uuid"
+                    :value="translation.uuid"
+                    >{{ translation.code }}</c-radio
+                  >
+                </c-radio-group>
+              </c-flex>
 
-      <c-drawer-body>
+              <c-flex :flex="2" height="50vh" overflowY="scroll" bg="green.50">
+                <c-radio-group v-if="books" v-model="_bookId">
+                  <c-radio
+                    v-for="book in filteredBooks"
+                    :key="book.index"
+                    :value="`${book.index}`"
+                    >{{ book.name }}</c-radio
+                  >
+                </c-radio-group>
+              </c-flex>
 
-        <c-flex width="100vw" align="start">
-          <c-flex :flex="1" height="50vh" overflowY="scroll" >      
-            <c-radio-group v-if="translations" v-model="translationId">
-              <c-radio as="c-button" v-for="translation in translations" :key="translation.uuid" :value="translation.uuid">{{translation.code}}</c-radio>
-            </c-radio-group>
-          </c-flex>
+              <c-flex :flex="1" height="50vh" overflowY="scroll" bg="blue.50">
+                <c-radio-group v-if="chapters" v-model="_chapterId">
+                  <c-radio
+                    v-for="chapter in chapters"
+                    :key="`some-${chapter}`"
+                    :value="`${chapter}`"
+                    >{{ chapter }}</c-radio
+                  >
+                </c-radio-group>
+              </c-flex>
+            </c-flex>
+          </c-drawer-body>
+        </c-drawer-content>
+      </c-drawer>
+    </div>
 
-          <c-flex :flex="2" height="50vh" overflowY="scroll" bg="green.50">
-            <c-radio-group v-if="books" v-model="_bookId">
-              <c-radio v-for="book in filteredBooks" :key="book.index" :value="`${book.index}`">{{book.name}}</c-radio>
-            </c-radio-group>
-          </c-flex>
-
-          <c-flex :flex="1" height="50vh" overflowY="scroll" bg="blue.50">
-            <c-radio-group v-if="chapters" v-model="_chapterId">
-              <c-radio v-for="chapter in chapters" :key="`some-${chapter}`" :value="`${chapter}`">{{chapter}}</c-radio>
-            </c-radio-group>
-          </c-flex>
-
-        </c-flex>
-
-      </c-drawer-body>
-
-      </c-drawer-content>
-    </c-drawer>
-  </div>
-
-
-
-    <c-box :m="['2', '3']" >
+    <c-box :m="['2', '3']">
       <c-box class="chapter" :spacing="3">
-          <c-text v-for="verse in verses" :key="verse.id">
-            <c-text fontWeight="bold" color="red.900" as="span">{{verse.v}}</c-text>
-            {{verse.text}}
-          </c-text>
-      </c-box>      
+        <c-text v-for="verse in verses" :key="verse.id">
+          <c-text fontWeight="bold" color="red.900" as="span">{{
+            verse.v
+          }}</c-text>
+          {{ verse.text }}
+        </c-text>
+      </c-box>
     </c-box>
-
-
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Watch, Prop, Vue } from "vue-property-decorator";
-import { getChapter, addVerses, add, getTranslations } from "@/shared/idbService.ts";
+import {
+  getChapter,
+  addVerses,
+  add,
+  getTranslations
+} from "@/shared/idbService.ts";
 import { bibleData } from "@/shared/bibleService.ts";
-import { BibleBookData, BibleVerse, BibleInfo } from '../shared/types';
+import { BibleBookData, BibleVerse, BibleInfo } from "../shared/types";
 
-import { CStack, CBox, CText, CFlex, CRadio, CRadioGroup, CButton,
+import {
+  CStack,
+  CBox,
+  CText,
+  CFlex,
+  CRadio,
+  CRadioGroup,
+  CButton,
   CDrawer,
   CDrawerBody,
   CDrawerFooter,
   CDrawerHeader,
   CDrawerOverlay,
   CDrawerContent,
-  CDrawerCloseButton,
-} from "@chakra-ui/vue"
+  CDrawerCloseButton
+} from "@chakra-ui/vue";
 
 @Component({
   components: {
-    CStack, 
-    CBox, 
+    CStack,
+    CBox,
     CText,
     CFlex,
-    CRadio, 
+    CRadio,
     CRadioGroup,
     CButton,
     CDrawer,
@@ -90,7 +115,7 @@ import { CStack, CBox, CText, CFlex, CRadio, CRadioGroup, CButton,
     CDrawerHeader,
     CDrawerOverlay,
     CDrawerContent,
-    CDrawerCloseButton,    
+    CDrawerCloseButton
   }
 })
 export default class BibleChapter extends Vue {
@@ -102,65 +127,73 @@ export default class BibleChapter extends Vue {
 
   availableBooks: number[] = [];
 
-  bookName: string = "";
+  bookName = "";
 
-  isOpen: boolean = false;
+  isOpen = false;
 
-  close(){
+  close() {
     this.isOpen = false;
   }
 
-  get title():string {
-    const translation = this.translations.find(x => x.uuid == this.translationId )
-    const currentTranslation = translation && translation['code'] || "";
-    const bookName = this.books && this.books[this.bookId]['name'] || "";
+  get title(): string {
+    const translation = this.translations.find(
+      x => x.uuid == this.translationId
+    );
+    const currentTranslation = (translation && translation["code"]) || "";
+    const bookName = (this.books && this.books[this.bookId]["name"]) || "";
     const chapter = this.chapterId;
 
-    console.log(this.translations, {translation, currentTranslation, bookName, chapter})
+    console.log(this.translations, {
+      translation,
+      currentTranslation,
+      bookName,
+      chapter
+    });
 
     return `${bookName} ${chapter} - ${currentTranslation}`;
   }
 
-  get filteredBooks(){
-
-    if(this.availableBooks.length == 0){
+  get filteredBooks() {
+    if (this.availableBooks.length == 0) {
       return this.books;
     }
 
-    return this.books.filter( x => {
+    return this.books.filter(x => {
       return this.availableBooks.includes(x.index);
-    })
+    });
   }
 
-  get chapters(){
+  get chapters() {
     const count = this.books[this.bookId].chapters;
-    console.log(count, this.chapterId)
-    if(count < this.chapterId){
+    console.log(count, this.chapterId);
+    if (count < this.chapterId) {
       this.chapterId = 1;
     }
-    return Array(count).fill(null).map((_,i) => i+1)
+    return Array(count)
+      .fill(null)
+      .map((_, i) => i + 1);
   }
 
-  translationId: string = "kjv";
-  bookId: number = 0;
-  chapterId: number = 1;
-  verseId: number = 1;
+  translationId = "kjv";
+  bookId = 0;
+  chapterId = 1;
+  verseId = 1;
 
-  get _bookId(): string{
+  get _bookId(): string {
     return `${this.bookId}`;
   }
-  set _bookId(val:string){
+  set _bookId(val: string) {
     this.bookId = +val;
   }
 
-  get _chapterId(): string{
+  get _chapterId(): string {
     return `${this.chapterId}`;
   }
-  set _chapterId(val:string){
+  set _chapterId(val: string) {
     this.chapterId = +val;
-  }  
+  }
 
-  created(){
+  created() {
     console.log("Yaay I have been created!");
 
     this.initTranslations();
@@ -178,80 +211,74 @@ export default class BibleChapter extends Vue {
     //this.populateDB();
   }
 
-  
-  @Watch('translationId') 
-  actionOnTranslationId(){
-    console.log("watch translationId")
-    const bibleInfo = this.translations.find( x => x.uuid == this.translationId );
-    this.availableBooks = bibleInfo && bibleInfo.bookIndexes || []; 
-    this.goToChapter()
+  @Watch("translationId")
+  actionOnTranslationId() {
+    console.log("watch translationId");
+    const bibleInfo = this.translations.find(x => x.uuid == this.translationId);
+    this.availableBooks = (bibleInfo && bibleInfo.bookIndexes) || [];
+    this.goToChapter();
   }
 
-  @Watch('bookId') 
-  actionOnBookId(){
-    console.log("watch bookId")
-    const translation = this.translations.find(x => x.uuid == this.translationId )
-    this.bookName  = translation && translation['code'] || "";
-  
-    this.goToChapter()
-  }  
+  @Watch("bookId")
+  actionOnBookId() {
+    console.log("watch bookId");
+    const translation = this.translations.find(
+      x => x.uuid == this.translationId
+    );
+    this.bookName = (translation && translation["code"]) || "";
 
-  @Watch('chapterId')
-  actionOnChapterId(){
-    console.log("watch chapterId")
-    this.goToChapter()
-  }  
+    this.goToChapter();
+  }
 
+  @Watch("chapterId")
+  actionOnChapterId() {
+    console.log("watch chapterId");
+    this.goToChapter();
+  }
 
-  goToChapter(){
+  goToChapter() {
     const { translationId, bookId, chapterId } = this;
     const key = `${translationId}-${bookId}-${chapterId}`;
-    getChapter(key).then(res => this.verses = res);
+    getChapter(key).then(res => (this.verses = res));
 
     this.addToHistory();
   }
 
-  initBooks(){
-    this.books = [ ...bibleData ];
+  initBooks() {
+    this.books = [...bibleData];
   }
 
-  addToHistory(){
-    localStorage.setItem("translationId", this.translationId)
-    localStorage.setItem("bookId", `${this.bookId}`)
-    localStorage.setItem("chapterId", `${this.chapterId}`)
+  addToHistory() {
+    localStorage.setItem("translationId", this.translationId);
+    localStorage.setItem("bookId", `${this.bookId}`);
+    localStorage.setItem("chapterId", `${this.chapterId}`);
   }
 
-  getLastHistory(){
-    this.translationId = localStorage.getItem('translationId') || "";
-    this.bookId = +(localStorage.getItem('bookId') || 1);
-    this.chapterId = +(localStorage.getItem('chapterId') || 1);
+  getLastHistory() {
+    this.translationId = localStorage.getItem("translationId") || "";
+    this.bookId = +(localStorage.getItem("bookId") || 1);
+    this.chapterId = +(localStorage.getItem("chapterId") || 1);
   }
 
-  async initTranslations(){
+  async initTranslations() {
     this.translations = await getTranslations();
   }
 
-
-  populateDB(){
+  populateDB() {
     fetch("http://127.0.0.1:5500/app/kjv.json")
-      .then( r => r.json())
-      .then( (data: any[]) => {
-        
+      .then(r => r.json())
+      .then((data: any[]) => {
         const nData = data.map(x => {
-          const uuid = `${x.cId}-${x.v}`
-          return ({...x, uuid})
-        })
+          const uuid = `${x.cId}-${x.v}`;
+          return { ...x, uuid };
+        });
 
-        console.log(nData)
+        console.log(nData);
         //addVerses(nData, "verses")
-      })
+      });
   }
-
-
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-</style>
+<style scoped></style>
