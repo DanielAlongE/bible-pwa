@@ -1,6 +1,6 @@
 <template>
   <div class="bookChapter">
-    <div style="position:fixed; width: 100vw; display: block">
+    <div style="position:fixed; width: 100vw; display: block; top:20px">
       <c-flex align="center" :m="[0, '10px']" justify="space-between">
         <c-button>&lt;</c-button>
         <c-button ref="btnRef" @click="isOpen = true">{{ title }}</c-button>
@@ -59,9 +59,9 @@
       </c-drawer>
     </div>
 
-    <c-box :m="['2', '3']">
+    <c-box my="12" mx="6">
       <c-box class="chapter" :spacing="3">
-        <c-text v-for="verse in verses" :key="verse.id">
+        <c-text v-for="verse in verses" :key="verse.id" fontSize="2em">
           <c-text fontWeight="bold" color="red.900" as="span">{{
             verse.v
           }}</c-text>
