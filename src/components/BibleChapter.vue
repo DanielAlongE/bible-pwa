@@ -1,6 +1,6 @@
 <template>
   <div class="bookChapter">
-    <div style="position:fixed; width: 100vw; display: block; top:20px">
+    <div style="position:fixed; width: 100vw; display: block; top:0">
       <c-flex align="center" :m="[0, '10px']" justify="space-between">
         <c-button>&lt;</c-button>
         <c-button ref="btnRef" @click="isOpen = true">{{ title }}</c-button>
