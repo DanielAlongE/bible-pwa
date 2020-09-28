@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@chakra-ui/vue": "^0.6.1",
+    "@fortawesome/free-solid-svg-icons": "^5.14.0",
     "core-js": "^3.6.5",
     "emotion": "^10.0.27",
     "idb": "^5.0.4",

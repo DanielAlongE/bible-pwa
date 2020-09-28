@@ -16,7 +16,7 @@ export default class BottomMenu extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-bottom-menu {
+.bottom-menu {
   position: fixed;
   bottom: 0;
   width: 100vw;
