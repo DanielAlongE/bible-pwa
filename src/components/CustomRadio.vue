@@ -1,28 +1,32 @@
-<template>
-    <c-button
-      v-bind="$props"
-      :variant-color="isChecked ? 'red' : 'gray'"
-      role="radio"
-      :aria-checked="isChecked"
-    >
-      <slot>
-    <c-button>
-</template>
-
 <script>
 import Vue from "vue";
-import { CButton } from '@chakra-ui/vue';
+import { CButton } from "@chakra-ui/vue";
 
-export default Vue.extend({
+export default Vue.component("CustomRadio", {
   name: "CustomRadio",
-  components: {
-    CButton
-  },
-    props: {
+  props: {
     isChecked: Boolean,
     isDisabled: Boolean,
     value: [String, Number],
-    mx: [String, Number]
+    m: String
+  },
+  render(h) {
+    console.log(this)
+    return h(
+      CButton,
+      {
+        props: {
+          ...this.$props,
+          isDisabled: this.isDisabled,
+          variantColor: this.isChecked ? "red" : "gray"
+        },
+        attrs: {
+          role: "radio",
+          "aria-checked": this.isChecked
+        }
+      },
+      this.$slots.default
+    );
   }
 });
 </script>

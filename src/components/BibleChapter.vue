@@ -26,13 +26,21 @@
           <c-drawer-body>
             <c-flex width="100vw" align="start">
               <c-flex :flex="1" height="50vh" overflowY="scroll">
-                <c-radio-group v-if="translations" v-model="translationId">
-                  <c-radio
-                    as="c-button"
+                <c-radio-group
+                  :value="translationId"
+                  v-if="translations"
+                  @change="
+                    e => {
+                      translationId = e;
+                    }
+                  "
+                >
+                  <CustomRadio
                     v-for="translation in translations"
                     :key="translation.uuid"
                     :value="translation.uuid"
-                    >{{ translation.code }}</c-radio
+                    size="lg"
+                    >{{ translation.code }}</CustomRadio
                   >
                 </c-radio-group>
               </c-flex>
@@ -101,6 +109,8 @@ import {
   CDrawerCloseButton
 } from "@chakra-ui/vue";
 
+import CustomRadio from "@/components/CustomRadio.vue";
+
 @Component({
   components: {
     CIcon,
@@ -117,7 +127,8 @@ import {
     CDrawerHeader,
     CDrawerOverlay,
     CDrawerContent,
-    CDrawerCloseButton
+    CDrawerCloseButton,
+    CustomRadio
   }
 })
 export default class BibleChapter extends Vue {

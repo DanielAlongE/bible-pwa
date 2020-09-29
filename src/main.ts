@@ -2,7 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
-import Chakra, { CThemeProvider, CReset } from '@chakra-ui/vue'
+import Chakra, { CThemeProvider, CReset, CButton } from '@chakra-ui/vue'
 import { faAngleRight, faAngleLeft, faCog, faHome, faCheckCircle, faBan  } from '@fortawesome/free-solid-svg-icons'
 
 
