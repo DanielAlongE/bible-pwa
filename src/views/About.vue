@@ -13,7 +13,7 @@ import BibleImport from "@/components/BibleImport.vue";
 export default {
   name: "Import",
   components: {
-    BibleImport,
+    BibleImport
   }
 };
 </script>

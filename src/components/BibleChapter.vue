@@ -1,10 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 <template>
   <div class="bookChapter">
     <div style="position:fixed; width: 100vw; display: block; top:0">
       <c-flex align="center" :m="[0, '10px']" justify="space-between">
-        <c-button>&lt;</c-button>
+        <c-button>
+          <c-icon name="angle-left" size="24px" />
+        </c-button>
         <c-button ref="btnRef" @click="isOpen = true">{{ title }}</c-button>
-        <c-button>&gt;</c-button>
+        <c-button>
+          <c-icon name="angle-right" size="24px" />
+        </c-button>
       </c-flex>
 
       <c-drawer
@@ -74,16 +79,12 @@
 
 <script lang="ts">
 import { Component, Watch, Prop, Vue } from "vue-property-decorator";
-import {
-  getChapter,
-  addVerses,
-  add,
-  getTranslations
-} from "@/shared/idbService.ts";
+import { getChapter, getTranslations } from "@/shared/idbService.ts";
 import { bibleData } from "@/shared/bibleService.ts";
 import { BibleBookData, BibleVerse, BibleInfo } from "../shared/types";
 
 import {
+  CIcon,
   CStack,
   CBox,
   CText,
@@ -102,6 +103,7 @@ import {
 
 @Component({
   components: {
+    CIcon,
     CStack,
     CBox,
     CText,
