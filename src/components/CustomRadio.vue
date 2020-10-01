@@ -11,18 +11,19 @@ export default Vue.component("CustomRadio", {
     m: String
   },
   render(h) {
-    console.log(this)
+    console.log(this.$props, this.$attrs);
     return h(
       CButton,
       {
         props: {
-          ...this.$props,
           isDisabled: this.isDisabled,
-          variantColor: this.isChecked ? "red" : "gray"
+          variantColor: this.isChecked ? "red" : "gray",
+          ...this.$props
         },
         attrs: {
           role: "radio",
-          "aria-checked": this.isChecked
+          "aria-checked": this.isChecked,
+          ...this.$attrs
         }
       },
       this.$slots.default

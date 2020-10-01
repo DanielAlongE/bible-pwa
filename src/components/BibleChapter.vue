@@ -26,7 +26,7 @@
           <c-drawer-body>
             <c-flex width="100vw" align="start">
               <c-flex :flex="1" height="50vh" overflowY="scroll">
-                <c-radio-group
+                <c-radio-button-group
                   :value="translationId"
                   v-if="translations"
                   @change="
@@ -34,37 +34,64 @@
                       translationId = e;
                     }
                   "
+                  width="100%"
+                  :px="2"
                 >
                   <CustomRadio
                     v-for="translation in translations"
                     :key="translation.uuid"
                     :value="translation.uuid"
-                    size="lg"
+                    :my="1"
+                    width="100%"
                     >{{ translation.code }}</CustomRadio
                   >
-                </c-radio-group>
+                </c-radio-button-group>
               </c-flex>
 
               <c-flex :flex="2" height="50vh" overflowY="scroll" bg="green.50">
-                <c-radio-group v-if="books" v-model="_bookId">
-                  <c-radio
+                <c-radio-button-group
+                  v-if="books"
+                  :value="_bookId"
+                  @change="
+                    e => {
+                      _bookId = e;
+                    }
+                  "
+                  width="100%"
+                  :px="2"
+                >
+                  <CustomRadio
                     v-for="book in filteredBooks"
                     :key="book.index"
                     :value="`${book.index}`"
-                    >{{ book.name }}</c-radio
+                    width="100%"
+                    :my="1"
+                    >{{ book.name }}</CustomRadio
                   >
-                </c-radio-group>
+                </c-radio-button-group>
               </c-flex>
 
-              <c-flex :flex="1" height="50vh" overflowY="scroll" bg="blue.50">
-                <c-radio-group v-if="chapters" v-model="_chapterId">
-                  <c-radio
+              <c-flex :flex="1" height="50vh" overflowY="scroll">
+                <c-radio-button-group
+                  v-if="chapters"
+                  :value="_chapterId"
+                  @change="
+                    e => {
+                      _chapterId = e;
+                    }
+                  "
+                  width="100%"
+                  :px="2"
+                >
+                  <CustomRadio
                     v-for="chapter in chapters"
                     :key="`some-${chapter}`"
                     :value="`${chapter}`"
-                    >{{ chapter }}</c-radio
+                    width="60%"
+                    :my="1"
+                    >{{ chapter }}</CustomRadio
                   >
-                </c-radio-group>
+                </c-radio-button-group>
               </c-flex>
             </c-flex>
           </c-drawer-body>
@@ -99,6 +126,7 @@ import {
   CFlex,
   CRadio,
   CRadioGroup,
+  CRadioButtonGroup,
   CButton,
   CDrawer,
   CDrawerBody,
@@ -128,6 +156,7 @@ import CustomRadio from "@/components/CustomRadio.vue";
     CDrawerOverlay,
     CDrawerContent,
     CDrawerCloseButton,
+    CRadioButtonGroup,
     CustomRadio
   }
 })
