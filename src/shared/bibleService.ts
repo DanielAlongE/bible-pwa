@@ -107,7 +107,7 @@ function hasPreviousChapter(bookId: number, chapterId: number){
     return false
 }
 
-function nextChapterKey(key: string){
+export function nextChapterKey(key: string){
     const [translationId, bookId, chapterId] = key.split('-').map( x => +x )
 
     const hasNext = hasNextChapter(bookId, chapterId)
@@ -122,16 +122,17 @@ function nextChapterKey(key: string){
     return null
 }
 
-function previousChapterKey(key: string){
+export function previousChapterKey(key: string){
     const [translationId, bookId, chapterId] = key.split('-').map( x => +x )
 
-    const hasNext = hasNextChapter(bookId, chapterId)
+    const hasPrevious = hasPreviousChapter(bookId, chapterId)
 
-    if(hasNext){
-        return `${translationId}-${bookId}-${chapterId + 1}`
+    if(hasPrevious){
+        return `${translationId}-${bookId}-${chapterId - 1}`
     }
     else if(bookId < bibleData.length){
-        return `${translationId}-${bookId + 1}-1`
+        const newChapterId = bibleData[bookId].chapters
+        return `${translationId}-${bookId + 1}-${newChapterId}`
     }
 
     return null
