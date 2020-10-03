@@ -286,6 +286,12 @@ export default class BibleChapter extends Vue {
     this.addToHistory();
   }
 
+  async goToNextChapter(){
+    const { translationId, bookId, chapterId } = this;
+    const key = `${translationId}-${bookId}-${chapterId}`;
+    await getChapter(key)
+  }
+
   initBooks() {
     this.books = [...bibleData];
   }

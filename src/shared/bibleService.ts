@@ -79,6 +79,64 @@ function isValidInfo(info: BibleInfo){
     return infoProps.every( x => info.hasOwnProperty(x) );
 }
 
+function hasNextChapter(bookId: number, chapterId: number){
+    if(bookId > bibleData.length){
+        return false
+    }
+
+    const currentBook = bibleData[bookId]
+
+    if(chapterId > currentBook.chapters){
+        return false
+    }
+
+    return true
+}
+
+function hasPreviousChapter(bookId: number, chapterId: number){
+    if(bookId > bibleData.length){
+        return false
+    }
+
+    const currentBook = bibleData[bookId]
+
+    if(chapterId > 1){
+        return true
+    }
+
+    return false
+}
+
+function nextChapterKey(key: string){
+    const [translationId, bookId, chapterId] = key.split('-').map( x => +x )
+
+    const hasNext = hasNextChapter(bookId, chapterId)
+
+    if(hasNext){
+        return `${translationId}-${bookId}-${chapterId + 1}`
+    }
+    else if(bookId < bibleData.length){
+        return `${translationId}-${bookId + 1}-1`
+    }
+
+    return null
+}
+
+function previousChapterKey(key: string){
+    const [translationId, bookId, chapterId] = key.split('-').map( x => +x )
+
+    const hasNext = hasNextChapter(bookId, chapterId)
+
+    if(hasNext){
+        return `${translationId}-${bookId}-${chapterId + 1}`
+    }
+    else if(bookId < bibleData.length){
+        return `${translationId}-${bookId + 1}-1`
+    }
+
+    return null
+}
+
 function isValidVerses(verses: BibleVerse[]){
     if(!Array.isArray(verses)){
         return false;
