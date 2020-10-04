@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-ignore */
 <template>
   <div class="hello">
+    <h1>Import Bible translation</h1>
+
     <c-box
       p="20px"
       rounded="md"
