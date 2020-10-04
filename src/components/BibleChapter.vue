@@ -341,20 +341,6 @@ export default class BibleChapter extends Vue {
   async initTranslations() {
     this.translations = await getTranslations();
   }
-
-  populateDB() {
-    fetch("http://127.0.0.1:5500/app/kjv.json")
-      .then(r => r.json())
-      .then((data: any[]) => {
-        const nData = data.map(x => {
-          const uuid = `${x.cId}-${x.v}`;
-          return { ...x, uuid };
-        });
-
-        console.log(nData);
-        //addVerses(nData, "verses")
-      });
-  }
 }
 </script>
 
