@@ -132,7 +132,7 @@ export function previousChapterKey(key: string){
     }
     else if(bookId < bibleData.length){
         const newChapterId = bibleData[bookId].chapters
-        return `${translationId}-${bookId + 1}-${newChapterId}`
+        return `${translationId}-${bookId - 1}-${newChapterId}`
     }
 
     return null

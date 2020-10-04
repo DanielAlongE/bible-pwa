@@ -3,11 +3,11 @@
   <div class="bookChapter">
     <div style="position:fixed; width: 100vw; display: block; top:0">
       <c-flex align="center" :m="[0, '10px']" justify="space-between">
-        <c-button>
+        <c-button @click="goToPreviousChapter()">
           <c-icon name="angle-left" size="24px" />
         </c-button>
         <c-button ref="btnRef" @click="isOpen = true">{{ title }}</c-button>
-        <c-button>
+        <c-button @click="goToNextChapter()">
           <c-icon name="angle-right" size="24px" />
         </c-button>
       </c-flex>
@@ -115,7 +115,11 @@
 <script lang="ts">
 import { Component, Watch, Prop, Vue } from "vue-property-decorator";
 import { getChapter, getTranslations } from "@/shared/idbService.ts";
-import { bibleData } from "@/shared/bibleService.ts";
+import {
+  bibleData,
+  nextChapterKey,
+  previousChapterKey
+} from "@/shared/bibleService.ts";
 import { BibleBookData, BibleVerse, BibleInfo } from "../shared/types";
 
 import {
@@ -286,10 +290,28 @@ export default class BibleChapter extends Vue {
     this.addToHistory();
   }
 
-  async goToNextChapter(){
+  async goToNextChapter() {
     const { translationId, bookId, chapterId } = this;
-    const key = `${translationId}-${bookId}-${chapterId}`;
-    await getChapter(key)
+    const key = nextChapterKey(`${translationId}-${bookId}-${chapterId}`);
+    if (key) {
+      this.verses = await getChapter(key);
+
+      if (this.verses.length) {
+        this.addToHistory();
+      }
+    }
+  }
+
+  async goToPreviousChapter() {
+    const { translationId, bookId, chapterId } = this;
+    const key = previousChapterKey(`${translationId}-${bookId}-${chapterId}`);
+    if (key) {
+      this.verses = await getChapter(key);
+
+      if (this.verses.length) {
+        this.addToHistory();
+      }
+    }
   }
 
   initBooks() {
