@@ -80,13 +80,13 @@ function isValidInfo(info: BibleInfo){
 }
 
 function hasNextChapter(bookId: number, chapterId: number){
-    if(bookId > bibleData.length){
+    if(bookId >= bibleData.length){
         return false
     }
 
     const currentBook = bibleData[bookId]
 
-    if(chapterId > currentBook.chapters){
+    if(chapterId >= currentBook.chapters){
         return false
     }
 
@@ -94,11 +94,9 @@ function hasNextChapter(bookId: number, chapterId: number){
 }
 
 function hasPreviousChapter(bookId: number, chapterId: number){
-    if(bookId > bibleData.length){
+    if(bookId >= bibleData.length){
         return false
     }
-
-    const currentBook = bibleData[bookId]
 
     if(chapterId > 1){
         return true
@@ -107,32 +105,33 @@ function hasPreviousChapter(bookId: number, chapterId: number){
     return false
 }
 
-export function nextChapterKey(key: string){
-    const [translationId, bookId, chapterId] = key.split('-').map( x => +x )
+export function nextChapterKey(translationId: string, bookId: number, chapterId: number){
 
     const hasNext = hasNextChapter(bookId, chapterId)
 
     if(hasNext){
-        return `${translationId}-${bookId}-${chapterId + 1}`
+        return [translationId, bookId, chapterId + 1]
     }
-    else if(bookId < bibleData.length){
-        return `${translationId}-${bookId + 1}-1`
+    else if(bookId < bibleData.length - 1){
+        return [translationId, bookId + 1, 1]
     }
 
     return null
 }
 
-export function previousChapterKey(key: string){
-    const [translationId, bookId, chapterId] = key.split('-').map( x => +x )
-
+export function previousChapterKey(translationId: string, bookId: number, chapterId: number){
     const hasPrevious = hasPreviousChapter(bookId, chapterId)
 
     if(hasPrevious){
-        return `${translationId}-${bookId}-${chapterId - 1}`
+        return [translationId, bookId, chapterId - 1]
     }
     else if(bookId < bibleData.length){
-        const newChapterId = bibleData[bookId].chapters
-        return `${translationId}-${bookId - 1}-${newChapterId}`
+        const newBookId = bookId - 1
+        if(newBookId < 0){
+            return null
+        }
+        const newChapterId = bibleData[newBookId].chapters
+        return [translationId, bookId - 1, newChapterId]
     }
 
     return null

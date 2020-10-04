@@ -292,25 +292,33 @@ export default class BibleChapter extends Vue {
 
   async goToNextChapter() {
     const { translationId, bookId, chapterId } = this;
-    const key = nextChapterKey(`${translationId}-${bookId}-${chapterId}`);
+    const key = nextChapterKey(translationId, bookId, chapterId);
+    console.log(key);
     if (key) {
-      this.verses = await getChapter(key);
+      // this.verses = await getChapter(key);
 
-      if (this.verses.length) {
-        this.addToHistory();
-      }
+      // if (this.verses.length) {
+      //   this.addToHistory();
+      // }
+      this.translationId = `${key[0]}`;
+      this.bookId = +key[1];
+      this.chapterId = +key[2];
     }
   }
 
   async goToPreviousChapter() {
     const { translationId, bookId, chapterId } = this;
-    const key = previousChapterKey(`${translationId}-${bookId}-${chapterId}`);
+    const key = previousChapterKey(translationId, bookId, chapterId);
+    console.log(key);
     if (key) {
-      this.verses = await getChapter(key);
+      // this.verses = await getChapter(key);
 
-      if (this.verses.length) {
-        this.addToHistory();
-      }
+      // if (this.verses.length) {
+      //   this.addToHistory();
+      // }
+      this.translationId = `${key[0]}`;
+      this.bookId = +key[1];
+      this.chapterId = +key[2];
     }
   }
 
