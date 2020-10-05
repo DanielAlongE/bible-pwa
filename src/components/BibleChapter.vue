@@ -177,6 +177,8 @@ export default class BibleChapter extends Vue {
 
   isOpen = false;
 
+  goToDebounceId: ReturnType<typeof setTimeout> = 0;
+
   close() {
     this.isOpen = false;
   }
@@ -186,15 +188,12 @@ export default class BibleChapter extends Vue {
       x => x.uuid == this.translationId
     );
     const currentTranslation = (translation && translation["code"]) || "";
-    const bookName = (this.books && this.books[this.bookId]["name"]) || "";
+    const bookName =
+      (this.books &&
+        this.books[this.bookId] &&
+        this.books[this.bookId]["name"]) ||
+      "";
     const chapter = this.chapterId;
-
-    console.log(this.translations, {
-      translation,
-      currentTranslation,
-      bookName,
-      chapter
-    });
 
     return `${bookName} ${chapter} - ${currentTranslation}`;
   }
@@ -210,7 +209,8 @@ export default class BibleChapter extends Vue {
   }
 
   get chapters() {
-    const count = this.books[this.bookId].chapters;
+    const currentBook = this.books[this.bookId];
+    const count = currentBook ? currentBook.chapters : 0;
     console.log(count, this.chapterId);
     if (count < this.chapterId) {
       this.chapterId = 1;
@@ -220,7 +220,7 @@ export default class BibleChapter extends Vue {
       .map((_, i) => i + 1);
   }
 
-  translationId = "kjv";
+  translationId = "";
   bookId = 0;
   chapterId = 1;
   verseId = 1;
@@ -242,19 +242,8 @@ export default class BibleChapter extends Vue {
   created() {
     console.log("Yaay I have been created!");
 
-    this.initTranslations();
-
     this.initBooks();
 
-    this.getLastHistory();
-
-    this.goToChapter();
-
-    //getChapter(`${this.translationId}-0-1`).then(res => this.verses = res);
-
-    //add({uuid:"kjv", code:"KJV", name:"King James Version"}, "translations")
-
-    //this.populateDB();
   }
 
   @Watch("translationId")
@@ -267,7 +256,6 @@ export default class BibleChapter extends Vue {
 
   @Watch("bookId")
   actionOnBookId() {
-    console.log("watch bookId");
     const translation = this.translations.find(
       x => x.uuid == this.translationId
     );
@@ -284,10 +272,16 @@ export default class BibleChapter extends Vue {
 
   goToChapter() {
     const { translationId, bookId, chapterId } = this;
-    const key = `${translationId}-${bookId}-${chapterId}`;
-    getChapter(key).then(res => (this.verses = res));
-
-    this.addToHistory();
+    if (this.goToDebounceId) {
+      clearTimeout(this.goToDebounceId);
+    }
+    console.log(`${translationId}-${bookId}-${chapterId}`);
+    this.goToDebounceId = setTimeout(() => {
+      const key = `${translationId}-${bookId}-${chapterId}`;
+      getChapter(key).then(res => (this.verses = res));
+      console.log(`GoTo ${translationId}-${bookId}-${chapterId}`);
+      this.addToHistory();
+    }, 100);
   }
 
   async goToNextChapter() {
@@ -322,13 +316,20 @@ export default class BibleChapter extends Vue {
     }
   }
 
-  initBooks() {
+  async initBooks() {
     this.books = [...bibleData];
+
+    await this.initTranslations();
+
+    this.getLastHistory();
+
+    this.goToChapter();
   }
 
   getFirstTranslationId() {
-    if (this.translations.length) {
-      return this.translations[0].code;
+    console.log("translations", this.translations);
+    if (this.translations.length > 0) {
+      return this.translations[0].uuid;
     }
     return "";
   }
@@ -340,13 +341,14 @@ export default class BibleChapter extends Vue {
   }
 
   getLastHistory() {
-    this.translationId = localStorage.getItem("translationId") || this.getFirstTranslationId();
-    this.bookId = +(localStorage.getItem("bookId") || 1);
+    const tId = localStorage.getItem("translationId");
+    this.translationId = tId ? tId : this.getFirstTranslationId();
+    this.bookId = +(localStorage.getItem("bookId") || 0);
     this.chapterId = +(localStorage.getItem("chapterId") || 1);
   }
 
-  async initTranslations() {
-    this.translations = await getTranslations();
+  initTranslations() {
+    return getTranslations().then(r => (this.translations = r));
   }
 }
 </script>
