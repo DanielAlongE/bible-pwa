@@ -2,7 +2,12 @@
 <template>
   <div class="bookChapter">
     <div style="position:fixed; width: 100vw; display: block; top:0">
-      <c-flex align="center" :m="[0, '10px']" justify="space-between">
+      <c-flex
+        align="center"
+        :m="[0, '10px']"
+        bg="white"
+        justify="space-between"
+      >
         <c-button @click="goToPreviousChapter()">
           <c-icon name="angle-left" size="24px" />
         </c-button>
@@ -11,92 +16,78 @@
           <c-icon name="angle-right" size="24px" />
         </c-button>
       </c-flex>
+      <DrawerMenu :isOpen="isOpen" :onClose="close" :title="title">
+        <c-flex width="100vw" align="start">
+          <c-flex :flex="1" height="50vh" overflowY="scroll">
+            <c-radio-button-group
+              :value="translationId"
+              v-if="translations"
+              @change="
+                e => {
+                  translationId = e;
+                }
+              "
+              width="100%"
+              :px="2"
+            >
+              <CustomRadio
+                v-for="translation in translations"
+                :key="translation.uuid"
+                :value="translation.uuid"
+                :my="1"
+                width="100%"
+                >{{ translation.code }}</CustomRadio
+              >
+            </c-radio-button-group>
+          </c-flex>
 
-      <c-drawer
-        :isOpen="isOpen"
-        placement="top"
-        :on-close="close"
-        :initialFocusRef="() => $refs.inputInsideModal"
-      >
-        <c-drawer-overlay />
-        <c-drawer-content>
-          <c-drawer-close-button />
-          <c-drawer-header>{{ title }}</c-drawer-header>
+          <c-flex :flex="2" height="50vh" overflowY="scroll" bg="green.50">
+            <c-radio-button-group
+              v-if="books"
+              :value="_bookId"
+              @change="
+                e => {
+                  _bookId = e;
+                }
+              "
+              width="100%"
+              :px="2"
+            >
+              <CustomRadio
+                v-for="book in filteredBooks"
+                :key="book.index"
+                :value="`${book.index}`"
+                width="100%"
+                :my="1"
+                >{{ book.name }}</CustomRadio
+              >
+            </c-radio-button-group>
+          </c-flex>
 
-          <c-drawer-body>
-            <c-flex width="100vw" align="start">
-              <c-flex :flex="1" height="50vh" overflowY="scroll">
-                <c-radio-button-group
-                  :value="translationId"
-                  v-if="translations"
-                  @change="
-                    e => {
-                      translationId = e;
-                    }
-                  "
-                  width="100%"
-                  :px="2"
-                >
-                  <CustomRadio
-                    v-for="translation in translations"
-                    :key="translation.uuid"
-                    :value="translation.uuid"
-                    :my="1"
-                    width="100%"
-                    >{{ translation.code }}</CustomRadio
-                  >
-                </c-radio-button-group>
-              </c-flex>
-
-              <c-flex :flex="2" height="50vh" overflowY="scroll" bg="green.50">
-                <c-radio-button-group
-                  v-if="books"
-                  :value="_bookId"
-                  @change="
-                    e => {
-                      _bookId = e;
-                    }
-                  "
-                  width="100%"
-                  :px="2"
-                >
-                  <CustomRadio
-                    v-for="book in filteredBooks"
-                    :key="book.index"
-                    :value="`${book.index}`"
-                    width="100%"
-                    :my="1"
-                    >{{ book.name }}</CustomRadio
-                  >
-                </c-radio-button-group>
-              </c-flex>
-
-              <c-flex :flex="1" height="50vh" overflowY="scroll">
-                <c-radio-button-group
-                  v-if="chapters"
-                  :value="_chapterId"
-                  @change="
-                    e => {
-                      _chapterId = e;
-                    }
-                  "
-                  width="100%"
-                  :px="2"
-                >
-                  <CustomRadio
-                    v-for="chapter in chapters"
-                    :key="`some-${chapter}`"
-                    :value="`${chapter}`"
-                    width="60%"
-                    :my="1"
-                    >{{ chapter }}</CustomRadio
-                  >
-                </c-radio-button-group>
-              </c-flex>
-            </c-flex>
-          </c-drawer-body>
-        </c-drawer-content>
-      </c-drawer>
+          <c-flex :flex="1" height="50vh" overflowY="scroll">
+            <c-radio-button-group
+              v-if="chapters"
+              :value="_chapterId"
+              @change="
+                e => {
+                  _chapterId = e;
+                }
+              "
+              width="100%"
+              :px="2"
+            >
+              <CustomRadio
+                v-for="chapter in chapters"
+                :key="`some-${chapter}`"
+                :value="`${chapter}`"
+                width="60%"
+                :my="1"
+                >{{ chapter }}</CustomRadio
+              >
+            </c-radio-button-group>
+          </c-flex>
+        </c-flex>
+      </DrawerMenu>
     </div>
 
     <c-box my="12" mx="6">
@@ -121,6 +112,7 @@ import {
   previousChapterKey
 } from "@/shared/bibleService.ts";
 import { BibleBookData, BibleVerse, BibleInfo } from "../shared/types";
+import DrawerMenu from "./DrawerMenu.vue";
 
 import {
   CIcon,
@@ -161,7 +153,8 @@ import CustomRadio from "@/components/CustomRadio.vue";
     CDrawerContent,
     CDrawerCloseButton,
     CRadioButtonGroup,
-    CustomRadio
+    CustomRadio,
+    DrawerMenu
   }
 })
 export default class BibleChapter extends Vue {
