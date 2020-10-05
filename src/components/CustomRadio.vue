@@ -11,7 +11,6 @@ export default Vue.component("CustomRadio", {
     m: String
   },
   render(h) {
-    console.log(this.$props, this.$attrs);
     return h(
       CButton,
       {

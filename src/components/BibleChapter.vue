@@ -243,7 +243,6 @@ export default class BibleChapter extends Vue {
     console.log("Yaay I have been created!");
 
     this.initBooks();
-
   }
 
   @Watch("translationId")
