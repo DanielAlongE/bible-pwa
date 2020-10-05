@@ -242,7 +242,7 @@ export default class BibleChapter extends Vue {
   created() {
     console.log("Yaay I have been created!");
 
-    this.initBooks();
+    this.init();
   }
 
   @Watch("translationId")
@@ -267,6 +267,7 @@ export default class BibleChapter extends Vue {
   actionOnChapterId() {
     console.log("watch chapterId");
     this.goToChapter();
+    this.isOpen = false;
   }
 
   goToChapter() {
@@ -315,7 +316,7 @@ export default class BibleChapter extends Vue {
     }
   }
 
-  async initBooks() {
+  async init() {
     this.books = [...bibleData];
 
     await this.initTranslations();
