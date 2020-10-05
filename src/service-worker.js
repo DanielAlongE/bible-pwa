@@ -6,12 +6,9 @@ importScripts(
 if (workbox) {
   console.log(`Yay! Workbox is loaded 🎉`);
 
-  workbox.precaching.precacheAndRoute([]);
+  workbox.precaching.precacheAndRoute([{url: '/', revision: null}]);
 
-  workbox.routing.registerRoute(
-    ({ url }) => url.pathname.endsWith(".html"),
-    new workbox.strategies.NetworkFirst()
-  );
+  workbox.routing.registerRoute("/", new workbox.strategies.NetworkFirst());
 
   workbox.routing.registerRoute(
     new RegExp(".+\\.js$"),
