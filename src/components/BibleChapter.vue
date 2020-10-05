@@ -326,6 +326,13 @@ export default class BibleChapter extends Vue {
     this.books = [...bibleData];
   }
 
+  getFirstTranslationId() {
+    if (this.translations.length) {
+      return this.translations[0].code;
+    }
+    return "";
+  }
+
   addToHistory() {
     localStorage.setItem("translationId", this.translationId);
     localStorage.setItem("bookId", `${this.bookId}`);
@@ -333,7 +340,7 @@ export default class BibleChapter extends Vue {
   }
 
   getLastHistory() {
-    this.translationId = localStorage.getItem("translationId") || "";
+    this.translationId = localStorage.getItem("translationId") || this.getFirstTranslationId();
     this.bookId = +(localStorage.getItem("bookId") || 1);
     this.chapterId = +(localStorage.getItem("chapterId") || 1);
   }

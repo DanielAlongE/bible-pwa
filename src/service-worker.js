@@ -6,7 +6,7 @@ importScripts(
 if (workbox) {
   console.log(`Yay! Workbox is loaded 🎉`);
 
-  workbox.precaching.precacheAndRoute([{url: '/', revision: null}]);
+  workbox.precaching.precacheAndRoute([{ url: "/", revision: null }]);
 
   workbox.routing.registerRoute("/", new workbox.strategies.NetworkFirst());
 
