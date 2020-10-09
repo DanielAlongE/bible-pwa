@@ -2,8 +2,9 @@ module.exports = {
   lintOnSave: true,
   pwa: {
     name: "Bible App",
-    themeColor: "#4DBA87",
-    msTileColor: "#000000",
+    themeColor: "#260751",
+    msTileColor: "#ffffff",
+    backgroundColor: "#ffffff",
     appleMobileWebAppCapable: "yes",
     appleMobileWebAppStatusBarStyle: "black",
 
