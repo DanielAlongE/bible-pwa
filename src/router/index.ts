@@ -21,6 +21,12 @@ const routes: Array<RouteConfig> = [
       import(/* webpackChunkName: "about" */ "../views/About.vue")
   },
   {
+    path: "/settings",
+    name: "Settings",
+    component: () =>
+      import("../views/Settings.vue")
+  },
+  {
     path: "/404",
     name: "404",
     component: Offline
