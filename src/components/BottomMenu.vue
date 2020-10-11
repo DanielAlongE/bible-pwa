@@ -9,10 +9,13 @@
       justify="space-around"
     >
       <router-link to="/">
-        <c-icon name="home" size="24px" />
+        <c-icon name="home" size="14px" />
       </router-link>
       <router-link to="/about">
-        <c-icon name="cog" size="24px" />
+        <c-icon name="cog" size="14px" />
+      </router-link>
+      <router-link to="/settings">
+        <c-icon name="cog" size="14px" />
       </router-link>
     </c-flex>
   </div>

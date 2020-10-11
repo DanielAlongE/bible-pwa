@@ -3,7 +3,7 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
 import Chakra, { CThemeProvider, CReset, CButton } from '@chakra-ui/vue'
-import { faAngleRight, faAngleLeft, faCog, faHome, faCheckCircle, faBan  } from '@fortawesome/free-solid-svg-icons'
+import { faAngleRight, faAngleLeft, faCog, faHome, faCheckCircle, faBan, faInfoCircle  } from '@fortawesome/free-solid-svg-icons'
 
 
 Vue.config.productionTip = false;
@@ -20,7 +20,8 @@ Vue.use(Chakra, {
       faCog,
       faHome,
       faCheckCircle,
-      faBan
+      faBan,
+      faInfoCircle
     }
   }
 })
