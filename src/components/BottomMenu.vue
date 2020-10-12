@@ -9,12 +9,12 @@
         align="center"
         justify="space-around"
       >
-        <router-link to="/">
+        <c-link as="router-link" to="/">
           <c-icon name="home" size="20px" />
-        </router-link>
-        <router-link to="/history">
+        </c-link>
+        <c-link as="router-link" to="/history">
           <c-icon name="history" size="20px" />
-        </router-link>
+        </c-link>
       </c-flex>
 
       <c-flex
@@ -38,13 +38,14 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { CIcon, CBox, CFlex } from "@chakra-ui/vue";
+import { CIcon, CBox, CFlex, CLink } from "@chakra-ui/vue";
 
 @Component({
   components: {
     CIcon,
     CBox,
-    CFlex
+    CFlex,
+    CLink
   }
 })
 export default class BottomMenu extends Vue {
