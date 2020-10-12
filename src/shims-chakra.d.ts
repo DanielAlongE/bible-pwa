@@ -30,4 +30,5 @@ declare module "@chakra-ui/vue" {
   export class CDrawerOverlay extends Vue {}
   export class CDrawerContent extends Vue {}
   export class CDrawerCloseButton extends Vue {}
+  export class CHeading extends Vue {}
 }

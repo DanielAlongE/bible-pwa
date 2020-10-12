@@ -1,6 +1,6 @@
 <template>
   <div class="bottom-menu" id="nav">
-    <c-flex justify="space-between">
+    <c-flex w="96vw" :mx="2" align="center" justify="space-between">
       <c-flex
         rounded="lg"
         bg="gray.200"

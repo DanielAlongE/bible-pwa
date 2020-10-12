@@ -1,17 +1,20 @@
 <template>
   <div class="about">
-    <BibleImport />
+    <c-box>
+      <c-heading as="h2" size="xl">
+        In love with Vue & Nuxt
+      </c-heading>
+    </c-box>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import BibleImport from "@/components/BibleImport.vue";
-
+import { CBox, CHeading } from "@chakra-ui/vue";
 export default {
   name: "Import",
   components: {
-    BibleImport
+    CBox,
+    CHeading
   }
 };
 </script>
