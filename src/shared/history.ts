@@ -6,7 +6,7 @@ function save(history: HistoryList[]){
   localStorage.setItem(item_key, JSON.stringify(history))
 }
 
-const get = (): HistoryList[] => {
+const getAll = (): HistoryList[] => {
   try {
     const h = localStorage.getItem(item_key);
     if(h){
@@ -21,12 +21,22 @@ const get = (): HistoryList[] => {
 }
 
 const push = (h: HistoryList) => {
-  let history = get()
+  let history = getAll()
   history.push(h)
   save(history)
 }
 
+const getLast = (): HistoryList | null => {
+  const history = getAll()
+  let size;
+  if(size = history.length){
+    return history[size - 1];
+  }
+  return null
+}
+
 export default {
-  get,
+  getAll,
+  getLast,
   push
 }

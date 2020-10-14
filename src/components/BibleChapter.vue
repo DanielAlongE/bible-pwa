@@ -284,9 +284,7 @@ export default class BibleChapter extends Vue {
   async goToNextChapter() {
     const { translationId, bookId, chapterId } = this;
     const key = nextChapterKey(translationId, bookId, chapterId);
-    console.log(key);
     if (key) {
-
       this.translationId = `${key[0]}`;
       this.bookId = +key[1];
       this.chapterId = +key[2];
@@ -296,13 +294,7 @@ export default class BibleChapter extends Vue {
   async goToPreviousChapter() {
     const { translationId, bookId, chapterId } = this;
     const key = previousChapterKey(translationId, bookId, chapterId);
-    console.log(key);
     if (key) {
-      // this.verses = await getChapter(key);
-
-      // if (this.verses.length) {
-      //   this.addToHistory();
-      // }
       this.translationId = `${key[0]}`;
       this.bookId = +key[1];
       this.chapterId = +key[2];
@@ -320,8 +312,10 @@ export default class BibleChapter extends Vue {
   }
 
   getFirstTranslationId() {
-    console.log("translations", this.translations);
-    if (this.translations.length > 0) {
+    const tId = localStorage.getItem("translationId");
+    if (tId) {
+      return tId;
+    } else if (this.translations.length > 0) {
       return this.translations[0].uuid;
     }
     return "";
@@ -329,17 +323,17 @@ export default class BibleChapter extends Vue {
 
   addToHistory() {
     localStorage.setItem("translationId", this.translationId);
-    localStorage.setItem("bookId", `${this.bookId}`);
-    localStorage.setItem("chapterId", `${this.chapterId}`);
+    // localStorage.setItem("bookId", `${this.bookId}`);
+    // localStorage.setItem("chapterId", `${this.chapterId}`);
     const bookName = this.getBookName(this.bookId);
     History.push([bookName, this.bookId, this.chapterId]);
   }
 
   getLastHistory() {
-    const tId = localStorage.getItem("translationId");
-    this.translationId = tId ? tId : this.getFirstTranslationId();
-    this.bookId = +(localStorage.getItem("bookId") || 0);
-    this.chapterId = +(localStorage.getItem("chapterId") || 1);
+    this.translationId = this.getFirstTranslationId();
+    const [, bookId, chapterId] = History.getLast() || ["", 0, 1];
+    this.bookId = bookId; //+(localStorage.getItem("bookId") || 0);
+    this.chapterId = chapterId; //+(localStorage.getItem("chapterId") || 1);
   }
 
   initTranslations() {
