@@ -1,4 +1,4 @@
-type HistoryList = [string, number, number]
+export type HistoryList = [string, number, number]
 
 const item_key = '_history';
 

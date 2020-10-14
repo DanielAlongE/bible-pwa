@@ -16,7 +16,11 @@
           <c-icon name="angle-right" size="24px" />
         </c-button>
       </c-flex>
-      <DrawerMenu :isOpen="isOpen" :onClose="close" :title="title">
+      <DrawerMenu
+        :isOpen="isOpenDrawer"
+        :onClose="onCloseDrawer"
+        :title="title"
+      >
         <c-flex width="100vw" align="start">
           <c-flex :flex="1" height="50vh" overflowY="scroll">
             <c-radio-button-group
@@ -100,6 +104,10 @@
         </c-text>
       </c-box>
     </c-box>
+    <BibleHistory
+      :isOpen="isOpenHistory"
+      :onClose="onCloseHistory"
+    ></BibleHistory>
   </div>
 </template>
 
@@ -113,6 +121,7 @@ import {
 } from "@/shared/bibleService.ts";
 import { BibleBookData, BibleVerse, BibleInfo } from "../shared/types";
 import DrawerMenu from "./DrawerMenu.vue";
+import BibleHistory from "@/components/BibleHistory.vue";
 
 import {
   CIcon,
@@ -123,14 +132,7 @@ import {
   CRadio,
   CRadioGroup,
   CRadioButtonGroup,
-  CButton,
-  CDrawer,
-  CDrawerBody,
-  CDrawerFooter,
-  CDrawerHeader,
-  CDrawerOverlay,
-  CDrawerContent,
-  CDrawerCloseButton
+  CButton
 } from "@chakra-ui/vue";
 
 import CustomRadio from "@/components/CustomRadio.vue";
@@ -146,16 +148,10 @@ import History from "@/shared/history.ts";
     CRadio,
     CRadioGroup,
     CButton,
-    CDrawer,
-    CDrawerBody,
-    CDrawerFooter,
-    CDrawerHeader,
-    CDrawerOverlay,
-    CDrawerContent,
-    CDrawerCloseButton,
     CRadioButtonGroup,
     CustomRadio,
-    DrawerMenu
+    DrawerMenu,
+    BibleHistory
   }
 })
 export default class BibleChapter extends Vue {
@@ -169,13 +165,18 @@ export default class BibleChapter extends Vue {
 
   bookName = "";
 
-  isOpen = false;
+  isOpenDrawer = false;
+  isOpenHistory = true;
+
+  onCloseDrawer() {
+    this.isOpenDrawer = false;
+  }
+
+  onCloseHistory() {
+    this.isOpenHistory = false;
+  }
 
   goToDebounceId: ReturnType<typeof setTimeout> = 0;
-
-  close() {
-    this.isOpen = false;
-  }
 
   getBookName(bookId: number) {
     return (
@@ -264,7 +265,7 @@ export default class BibleChapter extends Vue {
   actionOnChapterId() {
     console.log("watch chapterId");
     this.goToChapter();
-    this.isOpen = false;
+    this.isOpenDrawer = false;
   }
 
   goToChapter() {

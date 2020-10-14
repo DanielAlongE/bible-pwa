@@ -1,24 +1,37 @@
 <template>
-  <c-stack :spacing="5">
-    <c-button v-for="(history, i) in historyList" :key="i">{{
-      `${history[0]} ${history[3]}`
-    }}</c-button>
-  </c-stack>
+  <MyModal title="History" :isOpen="isOpen" :onClose="onClose">
+    <c-stack :spacing="5">
+      <c-button v-for="(history, i) in historyList" :key="i">{{
+        `${history[0]} ${history[2]}`
+      }}</c-button>
+    </c-stack>
+  </MyModal>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import Vue from "vue";
 import { CStack, CButton } from "@chakra-ui/vue";
-import History from "@/shared/history.ts";
+import History, { HistoryList } from "@/shared/history.ts";
+import MyModal from "@/components/MyModal.vue";
 
-@Component({
+export default Vue.extend({
   components: {
     CStack,
-    CButton
+    CButton,
+    MyModal
+  },
+  props: {
+    isOpen: Boolean,
+    onClose: Function
+  },
+  data: function() {
+    const historyList: HistoryList[] = [];
+    return {
+      historyList
+    };
+  },
+  created: function() {
+    this.historyList = History.getAll();
   }
-})
-export default class BottomMenu extends Vue {
-  @Prop() private show!: string;
-  historyList = History.getAll();
-}
+});
 </script>

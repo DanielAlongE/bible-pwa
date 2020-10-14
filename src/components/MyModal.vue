@@ -1,8 +1,8 @@
 <template>
   <c-modal
     :is-open="isOpen"
-    :on-close="close"
-    :closeOnOverlayClick="false"
+    :on-close="onClose"
+    :closeOnOverlayClick="true"
     is-centered
   >
     <c-modal-content ref="content">
