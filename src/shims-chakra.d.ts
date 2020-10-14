@@ -35,4 +35,11 @@ declare module "@chakra-ui/vue" {
   export class CList extends Vue {}
   export class CListItem extends Vue {}
   export class CImage extends Vue {}
+  export class CModal extends Vue {}
+  export class CModalContent extends Vue {}
+  export class CModalCloseButton extends Vue {}
+  export class CModalHeader extends Vue {}
+  export class CModalBody extends Vue {}
+  export class CModalFooter extends Vue {}
+  export class CModalOverlay extends Vue {}
 }
