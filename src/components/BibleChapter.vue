@@ -134,6 +134,7 @@ import {
 } from "@chakra-ui/vue";
 
 import CustomRadio from "@/components/CustomRadio.vue";
+import History from "@/shared/history.ts";
 
 @Component({
   components: {
@@ -176,16 +177,19 @@ export default class BibleChapter extends Vue {
     this.isOpen = false;
   }
 
+  getBookName(bookId: number) {
+    return (
+      (this.books && this.books[bookId] && this.books[bookId]["name"]) || ""
+    );
+  }
+
   get title(): string {
     const translation = this.translations.find(
       x => x.uuid == this.translationId
     );
     const currentTranslation = (translation && translation["code"]) || "";
-    const bookName =
-      (this.books &&
-        this.books[this.bookId] &&
-        this.books[this.bookId]["name"]) ||
-      "";
+    const bookName = this.getBookName(this.bookId);
+
     const chapter = this.chapterId;
 
     return `${bookName} ${chapter} - ${currentTranslation}`;
@@ -282,11 +286,7 @@ export default class BibleChapter extends Vue {
     const key = nextChapterKey(translationId, bookId, chapterId);
     console.log(key);
     if (key) {
-      // this.verses = await getChapter(key);
 
-      // if (this.verses.length) {
-      //   this.addToHistory();
-      // }
       this.translationId = `${key[0]}`;
       this.bookId = +key[1];
       this.chapterId = +key[2];
@@ -331,6 +331,8 @@ export default class BibleChapter extends Vue {
     localStorage.setItem("translationId", this.translationId);
     localStorage.setItem("bookId", `${this.bookId}`);
     localStorage.setItem("chapterId", `${this.chapterId}`);
+    const bookName = this.getBookName(this.bookId);
+    History.push([bookName, this.bookId, this.chapterId]);
   }
 
   getLastHistory() {
