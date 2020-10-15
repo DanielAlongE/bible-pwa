@@ -30,8 +30,12 @@ export default Vue.extend({
       historyList
     };
   },
-  created: function() {
-    this.historyList = History.getAll();
+  watch: {
+    isOpen: function(isOpen) {
+      if (isOpen) {
+        this.historyList = History.getAll();
+      }
+    }
   }
 });
 </script>
