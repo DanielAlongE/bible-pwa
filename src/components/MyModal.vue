@@ -3,6 +3,7 @@
     :is-open="isOpen"
     :on-close="onClose"
     :closeOnOverlayClick="true"
+    scroll-behavior="inside"
     is-centered
   >
     <c-modal-content ref="content">
