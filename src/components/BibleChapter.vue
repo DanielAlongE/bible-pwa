@@ -171,7 +171,7 @@ export default class BibleChapter extends Vue {
   bookName = "";
 
   isOpenDrawer = false;
-  isOpenHistory = true;
+  isOpenHistory = false;
 
   onCloseDrawer() {
     this.isOpenDrawer = false;
@@ -335,8 +335,10 @@ export default class BibleChapter extends Vue {
     localStorage.setItem("translationId", this.translationId);
     // localStorage.setItem("bookId", `${this.bookId}`);
     // localStorage.setItem("chapterId", `${this.chapterId}`);
-    const bookName = this.getBookName(this.bookId);
-    History.add([bookName, this.bookId, this.chapterId]);
+    setTimeout(() => {
+      const bookName = this.getBookName(this.bookId);
+      History.add([bookName, this.bookId, this.chapterId]);
+    }, 5000);
   }
 
   getLastHistory() {

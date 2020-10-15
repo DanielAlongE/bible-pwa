@@ -1,6 +1,6 @@
 <template>
   <MyModal title="History" :isOpen="isOpen" :onClose="onClose">
-    <c-stack :spacing="5">
+    <c-stack v-if="historyList.length" :spacing="5">
       <c-button v-for="(history, i) in historyList" :key="i">{{
         `${history[0]} ${history[2]}`
       }}</c-button>

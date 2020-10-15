@@ -10,7 +10,7 @@ const getAll = (): HistoryList[] => {
   try {
     const h = localStorage.getItem(item_key);
     if(h){
-      return JSON.parse(h)
+      return JSON.parse(h) || []
     }
     throw new Error("Parse Error");
     
@@ -23,9 +23,9 @@ const getAll = (): HistoryList[] => {
 const add = (h: HistoryList) => {
   const key = `${h[0]}-${h[1]}-${h[2]}`
   let history = getAll().filter(([bookName, bookId, chapterId]) => {
-    return `${bookName}-${bookId}-${chapterId}` !== key
-  })
-  save([h, ...history])
+      return `${bookName}-${bookId}-${chapterId}` !== key
+    });
+  save([h, ...history]);
 }
 
 const getLast = (): HistoryList | null => {
