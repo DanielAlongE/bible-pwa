@@ -5,11 +5,11 @@
         rounded="lg"
         bg="gray.200"
         h="50px"
-        w="100px"
+        w="50px"
         align="center"
         justify="space-around"
       >
-        <c-link as="router-link" to="/">
+        <c-link v-if="!handleHistory" as="router-link" to="/">
           <c-icon name="home" size="20px" />
         </c-link>
         <c-link v-if="handleHistory" @click="handleHistory()">
@@ -21,13 +21,10 @@
         rounded="lg"
         bg="gray.200"
         h="50px"
-        w="100px"
+        w="50px"
         align="center"
         justify="space-around"
       >
-        <router-link to="/about">
-          <c-icon name="info-circle" size="20px" />
-        </router-link>
         <router-link to="/settings">
           <c-icon name="cog" size="20px" />
         </router-link>
