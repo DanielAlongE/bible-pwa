@@ -20,10 +20,12 @@ const getAll = (): HistoryList[] => {
   }
 }
 
-const push = (h: HistoryList) => {
-  let history = getAll()
-  history.push(h)
-  save(history)
+const add = (h: HistoryList) => {
+  const key = `${h[0]}-${h[1]}-${h[2]}`
+  let history = getAll().filter(([bookName, bookId, chapterId]) => {
+    return `${bookName}-${bookId}-${chapterId}` !== key
+  })
+  save([h, ...history])
 }
 
 const getLast = (): HistoryList | null => {
@@ -38,5 +40,5 @@ const getLast = (): HistoryList | null => {
 export default {
   getAll,
   getLast,
-  push
+  add
 }

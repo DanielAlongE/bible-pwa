@@ -11,7 +11,9 @@
         <c-button @click="goToPreviousChapter()">
           <c-icon name="angle-left" size="24px" />
         </c-button>
-        <c-button ref="btnRef" @click="isOpen = true">{{ title }}</c-button>
+        <c-button ref="btnRef" @click="isOpenDrawer = true">{{
+          title
+        }}</c-button>
         <c-button @click="goToNextChapter()">
           <c-icon name="angle-right" size="24px" />
         </c-button>
@@ -108,6 +110,7 @@
       :isOpen="isOpenHistory"
       :onClose="onCloseHistory"
     ></BibleHistory>
+    <BottomMenu :handleHistory="openHistory" />
   </div>
 </template>
 
@@ -137,6 +140,7 @@ import {
 
 import CustomRadio from "@/components/CustomRadio.vue";
 import History from "@/shared/history.ts";
+import BottomMenu from "@/components/BottomMenu.vue";
 
 @Component({
   components: {
@@ -151,7 +155,8 @@ import History from "@/shared/history.ts";
     CRadioButtonGroup,
     CustomRadio,
     DrawerMenu,
-    BibleHistory
+    BibleHistory,
+    BottomMenu
   }
 })
 export default class BibleChapter extends Vue {
@@ -174,6 +179,10 @@ export default class BibleChapter extends Vue {
 
   onCloseHistory() {
     this.isOpenHistory = false;
+  }
+
+  openHistory() {
+    this.isOpenHistory = true;
   }
 
   goToDebounceId: ReturnType<typeof setTimeout> = 0;
@@ -327,7 +336,7 @@ export default class BibleChapter extends Vue {
     // localStorage.setItem("bookId", `${this.bookId}`);
     // localStorage.setItem("chapterId", `${this.chapterId}`);
     const bookName = this.getBookName(this.bookId);
-    History.push([bookName, this.bookId, this.chapterId]);
+    History.add([bookName, this.bookId, this.chapterId]);
   }
 
   getLastHistory() {

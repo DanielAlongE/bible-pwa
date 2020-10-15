@@ -48,6 +48,7 @@
         </c-box>
       </c-box>
     </c-box>
+    <BottomMenu />
   </div>
 </template>
 
@@ -62,6 +63,8 @@ import {
   CFlex,
   CText
 } from "@chakra-ui/vue";
+import BottomMenu from "@/components/BottomMenu.vue";
+
 export default {
   name: "About",
   data: function() {
@@ -78,7 +81,8 @@ export default {
     CListItem,
     CImage,
     CFlex,
-    CText
+    CText,
+    BottomMenu
   }
 };
 </script>

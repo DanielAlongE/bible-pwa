@@ -12,7 +12,7 @@
         <c-link as="router-link" to="/">
           <c-icon name="home" size="20px" />
         </c-link>
-        <c-link as="router-link" to="/history">
+        <c-link v-if="handleHistory" @click="handleHistory()">
           <c-icon name="history" size="20px" />
         </c-link>
       </c-flex>
@@ -37,20 +37,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
-import { CIcon, CBox, CFlex, CLink } from "@chakra-ui/vue";
+import Vue from "vue";
+import { CIcon, CFlex, CLink } from "@chakra-ui/vue";
 
-@Component({
+export default Vue.extend({
   components: {
     CIcon,
-    CBox,
     CFlex,
     CLink
+  },
+  props: {
+    isOpen: Boolean,
+    handleHistory: Function
+  },
+  data: function() {
+    return {};
   }
-})
-export default class BottomMenu extends Vue {
-  @Prop() private msg!: string;
-}
+});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

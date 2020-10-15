@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <BibleChapter msg="Welcome to Your Vue.js App" />
+    <BibleChapter />
   </div>
 </template>
 
