@@ -30,9 +30,8 @@ const add = (h: HistoryList) => {
 
 const getLast = (): HistoryList | null => {
   const history = getAll()
-  let size;
-  if(size = history.length){
-    return history[size - 1];
+  if(history.length > 0){
+    return history[0];
   }
   return null
 }
