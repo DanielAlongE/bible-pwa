@@ -109,6 +109,7 @@
     <BibleHistory
       :isOpen="isOpenHistory"
       :onClose="onCloseHistory"
+      @setChapter="setChapter"
     ></BibleHistory>
     <BottomMenu :handleHistory="openHistory" />
   </div>
@@ -289,6 +290,12 @@ export default class BibleChapter extends Vue {
       console.log(`GoTo ${translationId}-${bookId}-${chapterId}`);
       this.addToHistory();
     }, 100);
+  }
+
+  setChapter(bookId: number, chapterId: number) {
+    this.bookId = bookId;
+    this.chapterId = chapterId;
+    this.isOpenHistory = false;
   }
 
   async goToNextChapter() {

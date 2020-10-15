@@ -1,9 +1,12 @@
 <template>
   <MyModal title="History" :isOpen="isOpen" :onClose="onClose">
     <c-stack v-if="historyList.length" :spacing="5">
-      <c-button v-for="(history, i) in historyList" :key="i">{{
-        `${history[0]} ${history[2]}`
-      }}</c-button>
+      <c-button
+        v-for="(history, i) in historyList"
+        :key="i"
+        @click="goto(history[1], history[2])"
+        >{{ `${history[0]} ${history[2]}` }}</c-button
+      >
     </c-stack>
   </MyModal>
 </template>
@@ -23,6 +26,11 @@ export default Vue.extend({
   props: {
     isOpen: Boolean,
     onClose: Function
+  },
+  methods: {
+    goto: function(bookId: number, chapterId: number) {
+      this.$emit("setChapter", bookId, chapterId);
+    }
   },
   data: function() {
     const historyList: HistoryList[] = [];
