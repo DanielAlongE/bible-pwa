@@ -28,6 +28,7 @@
 <script lang="ts">
 import Vue from "vue";
 import { CText, CSelect, CBox, CHeading } from "@chakra-ui/vue";
+import { fontSize } from "@/shared/helper.ts";
 
 export default Vue.extend({
   name: "BibleImport",
@@ -45,11 +46,11 @@ export default Vue.extend({
   },
   watch: {
     size: function(s) {
-      localStorage.setItem("size", s);
+      fontSize.set(s);
     }
   },
   created: function() {
-    this.size = localStorage.getItem("size") || "2xl";
+    this.size = fontSize.get();
   }
 });
 </script>
