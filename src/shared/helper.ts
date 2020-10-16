@@ -6,3 +6,13 @@ export const fontSize = {
     localStorage.setItem("size", s);
   }
 }
+
+export const darkMode = {
+  get(){
+    const d = localStorage.getItem("darkMode");
+    return d === "true" ? true : false;
+  },
+  set(d: boolean){
+    localStorage.setItem("darkMode", `${d}`);
+  }
+}

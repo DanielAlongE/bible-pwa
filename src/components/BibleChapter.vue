@@ -98,10 +98,8 @@
 
     <c-box my="12" mx="6">
       <c-box class="chapter" :spacing="3">
-        <c-text v-for="verse in verses" :key="verse.id" fontSize="2em">
-          <c-text fontWeight="bold" color="red.900" as="span">{{
-            verse.v
-          }}</c-text>
+        <c-text v-for="verse in verses" :key="verse.id" :fontSize="fontSize">
+          <c-text fontWeight="bold" as="span">{{ verse.v }}</c-text>
           {{ verse.text }}
         </c-text>
       </c-box>
@@ -126,6 +124,7 @@ import {
 import { BibleBookData, BibleVerse, BibleInfo } from "../shared/types";
 import DrawerMenu from "./DrawerMenu.vue";
 import BibleHistory from "@/components/BibleHistory.vue";
+import { fontSize } from "@/shared/helper.ts";
 
 import {
   CIcon,
@@ -168,6 +167,9 @@ export default class BibleChapter extends Vue {
   verses: BibleVerse[] = [];
 
   availableBooks: number[] = [];
+
+  fontSize = "2xl";
+  darkMode = false;
 
   bookName = "";
 
@@ -249,6 +251,7 @@ export default class BibleChapter extends Vue {
 
   created() {
     console.log("Yaay I have been created!");
+    this.fontSize = fontSize.get();
 
     this.init();
   }
