@@ -1,13 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 <template>
-  <div class="bookChapter">
-    <div style="position:fixed; width: 100vw; display: block; top:0">
-      <c-flex
-        align="center"
-        :m="[0, '10px']"
-        bg="white"
-        justify="space-between"
-      >
+  <div
+    class="bookChapter"
+    :style="`${darkMode ? 'background-color:#1d1c1c;' : ''} padding:20px 0;`"
+  >
+    <div
+      :style="
+        `position:fixed; width: 100%; display: block; top:0; left:0; ${
+          darkMode ? 'background-color:#1d1c1c;' : ''
+        }`
+      "
+    >
+      <c-flex align="center" :m="[0, '10px']" justify="space-between">
         <c-button @click="goToPreviousChapter()">
           <c-icon name="angle-left" size="24px" />
         </c-button>
@@ -47,7 +51,7 @@
             </c-radio-button-group>
           </c-flex>
 
-          <c-flex :flex="2" height="50vh" overflowY="scroll" bg="green.50">
+          <c-flex :flex="2" height="50vh" overflowY="scroll">
             <c-radio-button-group
               v-if="books"
               :value="_bookId"
@@ -98,7 +102,12 @@
 
     <c-box my="12" mx="6">
       <c-box class="chapter" :spacing="3">
-        <c-text v-for="verse in verses" :key="verse.id" :fontSize="fontSize">
+        <c-text
+          v-for="verse in verses"
+          :key="verse.id"
+          :fontSize="fontSize"
+          :color="darkMode ? 'white' : 'black'"
+        >
           <c-text fontWeight="bold" as="span">{{ verse.v }}</c-text>
           {{ verse.text }}
         </c-text>
@@ -124,7 +133,7 @@ import {
 import { BibleBookData, BibleVerse, BibleInfo } from "../shared/types";
 import DrawerMenu from "./DrawerMenu.vue";
 import BibleHistory from "@/components/BibleHistory.vue";
-import { fontSize } from "@/shared/helper.ts";
+import { fontSize, darkMode } from "@/shared/helper.ts";
 
 import {
   CIcon,
@@ -252,7 +261,7 @@ export default class BibleChapter extends Vue {
   created() {
     console.log("Yaay I have been created!");
     this.fontSize = fontSize.get();
-
+    this.darkMode = darkMode.get();
     this.init();
   }
 

@@ -2,7 +2,7 @@
   <div class="about">
     <AboutModal />
     <BibleImport />
-    <FontSizeSettings />
+    <TextSettings />
     <BottomMenu />
   </div>
 </template>
@@ -12,7 +12,7 @@
 import BibleImport from "@/components/BibleImport.vue";
 import BottomMenu from "@/components/BottomMenu.vue";
 import AboutModal from "@/components/AboutModal.vue";
-import FontSizeSettings from "@/components/FontSizeSettings.vue";
+import TextSettings from "@/components/TextSettings.vue";
 
 export default {
   name: "Import",
@@ -20,7 +20,7 @@ export default {
     BibleImport,
     BottomMenu,
     AboutModal,
-    FontSizeSettings
+    TextSettings
   }
 };
 </script>

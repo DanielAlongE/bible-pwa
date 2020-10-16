@@ -1,7 +1,5 @@
 <template>
-  <div class="home">
-    <BibleChapter />
-  </div>
+  <BibleChapter />
 </template>
 
 <script>
