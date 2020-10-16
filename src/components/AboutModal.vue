@@ -1,9 +1,8 @@
 <template>
   <div>
-    <MyModal title="History" :isOpen="(isOpen = true)" :onClose="onClose">
+    <MyModal title="About" :isOpen="isOpen" :onClose="onClose">
       <c-box
         mx="auto"
-        mt="10vh"
         maxW="sm"
         border-width="1px"
         rounded="lg"
@@ -50,7 +49,9 @@
         </c-box>
       </c-box>
     </MyModal>
-    <c-button> <c-icon name="info-circle" size="20px" /> About </c-button>
+    <c-button @click="isOpen = true">
+      <c-icon name="info-circle" size="20px" />
+    </c-button>
   </div>
 </template>
 

@@ -42,4 +42,5 @@ declare module "@chakra-ui/vue" {
   export class CModalBody extends Vue {}
   export class CModalFooter extends Vue {}
   export class CModalOverlay extends Vue {}
+  export class CSelect extends Vue {}
 }

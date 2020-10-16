@@ -1,15 +1,14 @@
 /* eslint-disable @typescript-eslint/ban-ts-ignore */
 <template>
   <div class="hello">
-    <h1>Import Bible translation</h1>
-
     <c-box
       p="20px"
       rounded="md"
       :m="['20px', '20px']"
-      backgroundColor="vue.50"
+      backgroundColor="indigo.50"
       align="center"
     >
+      <c-heading color="indigo.700">Import Bible translation</c-heading>
       <c-stack isInline>
         <c-input
           pr="4.5rem"
@@ -17,11 +16,26 @@
           placeholder="Bible Database URL"
           v-model="fileurl"
         />
-        <c-button :disabled="loading" @click="handleImport">
+        <c-button
+          variant-color="gray"
+          shadow="md"
+          :disabled="loading"
+          @click="handleImport"
+        >
           Import
         </c-button>
       </c-stack>
       <c-circular-progress v-if="loading" is-indeterminate />
+      <c-stack :mt="4" mx="auto" w="60vw" :spacing="5">
+        <c-button
+          shadow="md"
+          v-for="(translation, i) in translationList"
+          :key="i"
+          @click="fileurl = translation.url"
+        >
+          {{ translation.name }}
+        </c-button>
+      </c-stack>
     </c-box>
   </div>
 </template>
@@ -34,7 +48,8 @@ import {
   CStack,
   CButton,
   CBox,
-  CCircularProgress
+  CCircularProgress,
+  CHeading
 } from "@chakra-ui/vue";
 
 export default Vue.extend({
@@ -44,13 +59,28 @@ export default Vue.extend({
     CStack,
     CButton,
     CBox,
-    CCircularProgress
+    CCircularProgress,
+    CHeading
   },
   data() {
     return {
       fileurl: "",
       loading: false,
-      external: "./js/pizzip.js"
+      external: "./js/pizzip.js",
+      translationList: [
+        {
+          name: "King James Version",
+          url: "https://bibleroni.web.app/db/kjv.zip"
+        },
+        {
+          name: "American Standard Version",
+          url: "https://bibleroni.web.app/db/asv.zip"
+        },
+        {
+          name: "Young's Literal Translation",
+          url: "https://bibleroni.web.app/db/ylt.zip"
+        }
+      ]
     };
   },
 
