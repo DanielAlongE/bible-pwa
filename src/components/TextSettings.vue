@@ -3,11 +3,12 @@
   <div class="hello">
     <c-box
       p="20px"
-      rounded="md"
+      rounded="lg"
       :m="['20px', '20px']"
-      backgroundColor="indigo.50"
+      backgroundColor="gray.50"
       align="center"
     >
+      <c-heading color="gray.700" mb="10px">Text Option</c-heading>
       <c-stack :spacing="5" is-inline>
         <c-box :p="5" shadow="md" border-width="1px">
           <c-select
@@ -20,7 +21,7 @@
             }}</option>
           </c-select>
         </c-box>
-        <c-box :p="8" bg="white" shadow="md" border-width="1px">
+        <c-box :p="8" shadow="md" border-width="1px">
           <c-checkbox
             :is-checked="darkMode"
             @change="
@@ -32,7 +33,7 @@
           >
         </c-box>
       </c-stack>
-      <c-box m="4" :bg="darkMode ? 'black' : 'white'">
+      <c-box m="4" :bg="darkMode ? '#1d1c1c' : 'white'" rounded="md">
         <c-text :fontSize="size" :color="darkMode ? 'white' : 'black'">
           <c-text fontWeight="bold" as="span">16</c-text>
           For God so loved the world that he gave his one and only Son, that
@@ -45,7 +46,14 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { CText, CSelect, CBox, CCheckbox, CStack } from "@chakra-ui/vue";
+import {
+  CText,
+  CSelect,
+  CBox,
+  CCheckbox,
+  CStack,
+  CHeading
+} from "@chakra-ui/vue";
 import { fontSize, darkMode } from "@/shared/helper.ts";
 
 export default Vue.extend({
@@ -55,7 +63,8 @@ export default Vue.extend({
     CSelect,
     CBox,
     CCheckbox,
-    CStack
+    CStack,
+    CHeading
   },
   data() {
     return {

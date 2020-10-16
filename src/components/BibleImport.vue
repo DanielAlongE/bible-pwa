@@ -3,12 +3,12 @@
   <div class="hello">
     <c-box
       p="20px"
-      rounded="md"
+      rounded="lg"
       :m="['20px', '20px']"
-      backgroundColor="indigo.50"
+      backgroundColor="gray.50"
       align="center"
     >
-      <c-heading color="indigo.700">Import Bible translation</c-heading>
+      <c-heading color="gray.700" mb="10px">Import Bible Translation</c-heading>
       <c-stack isInline>
         <c-input
           pr="4.5rem"

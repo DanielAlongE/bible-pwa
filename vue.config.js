@@ -1,7 +1,7 @@
 module.exports = {
   lintOnSave: true,
   pwa: {
-    name: "Bible App",
+    name: "Bible Roni App",
     themeColor: "#260751",
     msTileColor: "#ffffff",
     backgroundColor: "#ffffff",
