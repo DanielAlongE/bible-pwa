@@ -31,7 +31,7 @@ import { CText, CSelect, CBox, CHeading } from "@chakra-ui/vue";
 import { fontSize } from "@/shared/helper.ts";
 
 export default Vue.extend({
-  name: "BibleImport",
+  name: "TextSettings",
   components: {
     CText,
     CSelect,
