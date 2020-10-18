@@ -4,7 +4,6 @@ module.exports = {
   pwa: {
     name: "Bible Roni",
     themeColor: "#260751",
-    msTileColor: "#ffffff",
     backgroundColor: "#ffffff",
     appleMobileWebAppCapable: "yes",
     appleMobileWebAppStatusBarStyle: "black",
