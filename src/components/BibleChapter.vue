@@ -333,11 +333,16 @@ export default class BibleChapter extends Vue {
   async init() {
     this.books = [...bibleData];
 
-    await this.initTranslations();
+    const translations = await this.initTranslations();
 
-    this.getLastHistory();
+    if (translations.length > 0) {
+      this.getLastHistory();
 
-    this.goToChapter();
+      this.goToChapter();
+    } else {
+      //push to settings page
+      this.$router.push("settings");
+    }
   }
 
   getFirstTranslationId() {
