@@ -3,7 +3,7 @@
     <AboutModal />
     <BibleImport />
     <TextSettings />
-    <BottomMenu />
+    <BottomMenu :hideSettings="true" />
   </div>
 </template>
 

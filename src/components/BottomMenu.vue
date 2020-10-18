@@ -25,7 +25,8 @@
         align="center"
         justify="space-around"
       >
-        <router-link to="/settings">
+        <AboutModal v-if="hideSettings" />
+        <router-link v-if="!hideSettings" to="/settings">
           <c-icon name="cog" size="20px" />
         </router-link>
       </c-flex>
@@ -36,15 +37,18 @@
 <script lang="ts">
 import Vue from "vue";
 import { CIcon, CFlex, CLink } from "@chakra-ui/vue";
+import AboutModal from "@/components/AboutModal.vue";
 
 export default Vue.extend({
   components: {
     CIcon,
     CFlex,
-    CLink
+    CLink,
+    AboutModal
   },
   props: {
     isOpen: Boolean,
+    hideSettings: Boolean,
     handleHistory: Function
   },
   data: function() {
