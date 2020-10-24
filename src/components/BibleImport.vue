@@ -116,6 +116,9 @@ export default Vue.extend({
         .finally(() => (this.loading = false));
     }
   },
+  created(){
+    console.log(this.$route.params)
+  },
   mounted() {
     const externalScript = document.createElement("script");
     externalScript.setAttribute("src", this.external);

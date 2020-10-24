@@ -341,7 +341,7 @@ export default class BibleChapter extends Vue {
       this.goToChapter();
     } else {
       //push to settings page
-      this.$router.push("settings");
+      this.$router.push({ path: "settings", query: { new: "true" } });
     }
   }
 
