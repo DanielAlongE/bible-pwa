@@ -32,6 +32,7 @@
           v-for="(translation, i) in translationList"
           :key="i"
           @click="fileurl = translation.url"
+          :disabled="loading"
         >
           {{ translation.name }}
         </c-button>
@@ -116,8 +117,15 @@ export default Vue.extend({
         .finally(() => (this.loading = false));
     }
   },
-  created(){
-    console.log(this.$route.params)
+  created() {
+    if (this.$route.query.new) {
+      this.showToast({
+        title: "Welcome!",
+        description: "Please import a Bible translation",
+        status: "info",
+        duration: 60000
+      });
+    }
   },
   mounted() {
     const externalScript = document.createElement("script");
